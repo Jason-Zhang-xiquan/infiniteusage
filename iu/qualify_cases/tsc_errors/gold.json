@@ -1,0 +1,24 @@
+{
+ "id": "tsc_errors",
+ "kind": "sum",
+ "command": "npx tsc --noEmit -p . --listFiles",
+ "exit": 2,
+ "goal": "",
+ "question": "",
+ "files": [],
+ "required": [
+  [
+   "TS2322"
+  ],
+  [
+   "TS2304"
+  ],
+  [
+   "undefinedHelperZz"
+  ]
+ ],
+ "locations": [
+  "aihorde.ts(72,",
+  "aihorde.ts(225,"
+ ]
+}

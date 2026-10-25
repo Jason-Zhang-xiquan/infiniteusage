@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD166"/>
+      <stop offset="100%" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="800" height="600" fill="url(#sky)"/>
+
+  <!-- sun -->
+  <circle cx="90" cy="90" r="45" fill="#FFB703"/>
+
+  <!-- birds (exactly 5) -->
+  <g fill="none" stroke="#2B2D42" stroke-width="3" stroke-linecap="round">
+    <path d="M120 170 q15 -14 30 0 q15 -14 30 0"/>
+    <path d="M210 120 q13 -12 26 0 q13 -12 26 0"/>
+    <path d="M300 180 q11 -10 22 0 q11 -10 22 0"/>
+    <path d="M600 120 q15 -14 30 0 q15 -14 30 0"/>
+    <path d="M690 170 q13 -12 26 0 q13 -12 26 0"/>
+  </g>
+
+  <!-- roadside sign -->
+  <g>
+    <rect x="706" y="380" width="8" height="150" fill="#5C677D"/>
+    <rect x="672" y="330" width="76" height="52" rx="6" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <text x="710" y="364" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#2B2D42">IU-43</text>
+  </g>
+
+  <!-- ground -->
+  <line x1="0" y1="530" x2="800" y2="530" stroke="#5C677D" stroke-width="4" stroke-dasharray="12 8"/>
+
+  <!-- rear wheel -->
+  <g>
+    <circle cx="300" cy="470" r="60" fill="none" stroke="#333333" stroke-width="6"/>
+    <g stroke="#5C677D" stroke-width="2">
+      <line x1="300" y1="470" x2="360" y2="470"/>
+      <line x1="300" y1="470" x2="330" y2="522"/>
+      <line x1="300" y1="470" x2="270" y2="522"/>
+      <line x1="300" y1="470" x2="240" y2="470"/>
+      <line x1="300" y1="470" x2="270" y2="418"/>
+      <line x1="300" y1="470" x2="330" y2="418"/>
+    </g>
+    <circle cx="300" cy="470" r="6" fill="#5C677D"/>
+  </g>
+
+  <!-- front wheel -->
+  <g>
+    <circle cx="520" cy="470" r="60" fill="none" stroke="#333333" stroke-width="6"/>
+    <g stroke="#5C677D" stroke-width="2">
+      <line x1="520" y1="470" x2="580" y2="470"/>
+      <line x1="520" y1="470" x2="550" y2="522"/>
+      <line x1="520" y1="470" x2="490" y2="522"/>
+      <line x1="520" y1="470" x2="460" y2="470"/>
+      <line x1="520" y1="470" x2="490" y2="418"/>
+      <line x1="520" y1="470" x2="550" y2="418"/>
+    </g>
+    <circle cx="520" cy="470" r="6" fill="#5C677D"/>
+  </g>
+
+  <!-- bicycle frame -->
+  <g fill="none" stroke="#8338EC" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="300" y1="470" x2="390" y2="470"/>
+    <line x1="390" y1="470" x2="360" y2="350"/>
+    <line x1="360" y1="350" x2="500" y2="360"/>
+    <line x1="390" y1="470" x2="500" y2="360"/>
+    <line x1="360" y1="350" x2="300" y2="470"/>
+    <line x1="500" y1="360" x2="520" y2="470"/>
+  </g>
+
+  <!-- seat -->
+  <path d="M338 348 q22 -10 44 0 q-22 8 -44 0 Z" fill="#2B2D42"/>
+  <!-- handlebars -->
+  <path d="M500 360 l-16 -18 M500 360 l18 -10" fill="none" stroke="#2B2D42" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- front basket with fish -->
+  <g>
+    <path d="M508 300 l72 0 l-8 42 l-56 0 Z" fill="none" stroke="#2B2D42" stroke-width="4"/>
+    <line x1="520" y1="300" x2="524" y2="342" stroke="#2B2D42" stroke-width="2"/>
+    <line x1="536" y1="300" x2="538" y2="342" stroke="#2B2D42" stroke-width="2"/>
+    <line x1="552" y1="300" x2="552" y2="342" stroke="#2B2D42" stroke-width="2"/>
+    <line x1="568" y1="300" x2="566" y2="342" stroke="#2B2D42" stroke-width="2"/>
+    <!-- fish -->
+    <g fill="#3A86FF">
+      <path d="M524 320 q22 -14 44 0 q-22 14 -44 0 Z"/>
+      <path d="M524 320 l-14 -9 l0 18 Z"/>
+    </g>
+    <circle cx="556" cy="316" r="2.5" fill="#2B2D42"/>
+  </g>
+
+  <!-- pelican -->
+  <g>
+    <!-- body -->
+    <ellipse cx="372" cy="300" rx="52" ry="40" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <!-- tail -->
+    <path d="M322 300 q-32 -12 -46 -34 q26 4 46 20 Z" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <!-- neck -->
+    <path d="M404 286 q30 -22 24 -60" fill="none" stroke="#2B2D42" stroke-width="26" stroke-linecap="round"/>
+    <path d="M404 286 q30 -22 24 -60" fill="none" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"/>
+    <!-- head -->
+    <circle cx="432" cy="214" r="22" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <!-- eye -->
+    <circle cx="440" cy="208" r="4" fill="#2B2D42"/>
+    <!-- beak -->
+    <path d="M450 214 l78 8 q10 2 0 8 l-78 6 Z" fill="#FFB703" stroke="#2B2D42" stroke-width="3"/>
+    <path d="M452 232 q40 8 76 0" fill="none" stroke="#2B2D42" stroke-width="3"/>
+    <!-- scarf -->
+    <path d="M402 288 q22 -16 44 -8 q-18 16 -44 8 Z" fill="#E4572E" stroke="#E4572E" stroke-width="2"/>
+    <path d="M420 292 q10 24 -3 42 q-14 -6 -12 -26 Z" fill="#E4572E"/>
+    <!-- legs -->
+    <path d="M372 338 l-6 34 M392 338 l8 30" fill="none" stroke="#2B2D42" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>

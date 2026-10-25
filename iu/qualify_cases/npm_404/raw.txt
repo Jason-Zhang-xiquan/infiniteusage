@@ -1,0 +1,35 @@
+npm verbose cli /opt/homebrew/Cellar/node@22/22.23.3_3/bin/node /opt/homebrew/opt/node@22/bin/npm
+npm info using npm@10.9.9
+npm info using node@v22.23.3
+npm verbose title npm install iu-definitely-not-real-pkg-zz9
+npm verbose argv "install" "iu-definitely-not-real-pkg-zz9" "--no-audit" "--no-fund" "--loglevel" "verbose"
+npm verbose logfile logs-max:10 dir:/Users/user/.npm/_logs/2026-10-18T03_24_50_218Z-
+npm verbose logfile /Users/user/.npm/_logs/2026-10-18T03_24_50_218Z-debug-0.log
+npm http fetch GET 404 https://registry.npmjs.org/iu-definitely-not-real-pkg-zz9 343ms (cache skip)
+npm verbose stack HttpErrorGeneral: 404 Not Found - GET https://registry.npmjs.org/iu-definitely-not-real-pkg-zz9 - Not found
+npm verbose stack     at /opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/npm-registry-fetch/lib/check-response.js:103:15
+npm verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+npm verbose stack     at async RegistryFetcher.packument (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/pacote/lib/registry.js:90:19)
+npm verbose stack     at async RegistryFetcher.manifest (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/pacote/lib/registry.js:128:23)
+npm verbose stack     at async #fetchManifest (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:1202:20)
+npm verbose stack     at async #nodeFromEdge (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:1040:19)
+npm verbose stack     at async #buildDepStep (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:904:11)
+npm verbose stack     at async Arborist.buildIdealTree (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js:181:7)
+npm verbose stack     at async Promise.all (index 1)
+npm verbose stack     at async Arborist.reify (/opt/homebrew/Cellar/node@22/22.23.3_3/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js:133:5)
+npm verbose statusCode 404
+npm verbose pkgid iu-definitely-not-real-pkg-zz9@*
+npm error code E404
+npm error 404 Not Found - GET https://registry.npmjs.org/iu-definitely-not-real-pkg-zz9 - Not found
+npm error 404
+npm error 404  'iu-definitely-not-real-pkg-zz9@*' is not in this registry.
+npm error 404
+npm error 404 Note that you can also install from a
+npm error 404 tarball, folder, http url, or git url.
+npm verbose cwd /private/tmp/iu_npmtest
+npm verbose os Darwin 25.6.0
+npm verbose node v22.23.3
+npm verbose npm  v10.9.9
+npm verbose exit 1
+npm verbose code 1
+npm error A complete log of this run can be found in: /Users/user/.npm/_logs/2026-10-18T03_24_50_218Z-debug-0.log

@@ -1,0 +1,14 @@
+[project]
+name = "infiniteusage"
+version = "0.2.0"
+description = "Cut paid token usage of Claude Code and Codex without lowering result quality"
+requires-python = ">=3.9"
+
+[project.scripts]
+iu = "iu.cli:main"
+
+[tool.setuptools]
+packages = ["iu"]
+
+[tool.setuptools.package-data]
+iu = ["qualify_cases/*.md", "qualify_cases/*/*"]

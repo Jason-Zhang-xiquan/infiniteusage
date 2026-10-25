@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Pelican riding a bicycle</title>
+  <desc id="desc">A cheerful white pelican with an orange bill pedals a teal bicycle along a sunny path.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#dff5f4"/><stop offset="1" stop-color="#f6f5dd"/></linearGradient>
+    <linearGradient id="pouch" x1="0" y1="0" x2=".2" y2="1"><stop stop-color="#ffca79"/><stop offset="1" stop-color="#ef8c55"/></linearGradient>
+    <style>.ink{stroke:#263d4b;stroke-linecap:round;stroke-linejoin:round}.spoke{stroke:#a6c9c8;stroke-width:2}</style>
+  </defs>
+  <rect width="960" height="640" fill="url(#sky)"/>
+  <circle cx="788" cy="115" r="54" fill="#ffdc83"/>
+  <path d="M80 140c20-26 61-28 83-4 12-13 42-10 49 10 22-3 38 9 41 25H72c-7-14-3-25 8-31ZM668 74c18-21 48-21 65-2 15-8 32-2 36 11 18-2 29 7 32 20H653c-6-13 1-24 15-29Z" fill="#fff" opacity=".8"/>
+  <path d="M0 513q240-28 479 0t481 0v127H0Z" fill="#e2eacb"/>
+  <path d="M0 557q278-23 493 0t467 0v83H0Z" fill="#f3e8cc"/>
+  <path d="M45 566h118m625 10h128M85 602h72m628 4h56" fill="none" stroke="#d7c9a9" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+  <g>
+    <circle cx="276" cy="470" r="116" fill="#f9f5e7" class="ink" stroke-width="16"/>
+    <circle cx="690" cy="470" r="116" fill="#f9f5e7" class="ink" stroke-width="16"/>
+    <circle cx="276" cy="470" r="103" fill="none" stroke="#8caaa7" stroke-width="3"/>
+    <circle cx="690" cy="470" r="103" fill="none" stroke="#8caaa7" stroke-width="3"/>
+    <path class="spoke" d="M276 367v206m-103-103h206m-176-73 146 146m0-146L203 543m487-176v206m-103-103h206m-176-73 146 146m0-146L617 543"/>
+    <circle cx="276" cy="470" r="13" fill="#315769"/><circle cx="690" cy="470" r="13" fill="#315769"/>
+  </g>
+  <g fill="none" class="ink" stroke-width="12">
+    <path d="M276 470 421 369 487 483 276 470M421 369h193L487 483M614 369l76 101" stroke="#278f91"/>
+    <path d="M614 369 631 336h34m-34 0 20 16" stroke="#263d4b" stroke-width="8"/>
+    <path d="M413 361h-45" stroke="#263d4b" stroke-width="9"/>
+  </g>
+  <path d="M369 354q24-13 72-3c0 14-10 21-32 21h-37q-13-3-3-18Z" fill="#263d4b"/>
+  <path d="M362 323q-56 15-91-26 14 43 61 52l-48 7q43 22 91-4Z" fill="#f8f5e9" class="ink" stroke-width="5"/>
+  <path d="M350 286q32-45 101-39 54 2 74 46 1 52-50 69-77 26-128-13-21-28 3-63Z" fill="#fffdf2" class="ink" stroke-width="6"/>
+  <path d="M476 282q45-23 66-76 12-28 8-50-3-37 25-50 28-14 52 2 17 11 21 36-27 18-53 9-2 52-20 95-20 43-54 64Z" fill="#fffdf2" class="ink" stroke-width="6"/>
+  <path d="M568 109q3-24 22-26m6 27q8-24 27-24m-7 31q14-18 28-13" fill="none" class="ink" stroke-width="5"/>
+  <path d="M617 158q76 13 170 31-91 18-167 7Z" fill="#f9aa54" class="ink" stroke-width="5"/>
+  <path d="M625 194q73 4 159-5-16 42-48 68-35 29-81 19-29-8-30-82Z" fill="url(#pouch)" class="ink" stroke-width="5"/>
+  <path d="M639 205q24 41 66 48" fill="none" stroke="#f9d296" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="609" cy="144" r="6" fill="#263d4b"/><circle cx="611" cy="142" r="2" fill="#fff"/>
+  <path d="M572 149q12 6 22 1" fill="none" class="ink" stroke-width="3"/>
+  <path d="M478 274q40-12 69 16l88 55-13 20-109-38q-42 5-69-18" fill="#f4f0df" class="ink" stroke-width="6"/>
+  <path d="M464 297q29 31 72 28m-72-13q25 30 61 31" fill="none" stroke="#d9dcca" stroke-width="4" stroke-linecap="round"/>
+  <path d="M622 348q17-3 28 8m-22 0q13 0 20 10" fill="none" class="ink" stroke-width="5"/>
+  <path d="M426 351q5 37 41 55l19 59m-38-106q44 23 55 49l-16 75" fill="none" stroke="#e99859" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M476 465q18 7 32 0m-32 19q14 8 31 3" fill="none" class="ink" stroke-width="8"/>
+  <circle cx="487" cy="483" r="19" fill="#f7d279" class="ink" stroke-width="5"/>
+  <path d="M487 483l24 20m-24-20-29-22" fill="none" class="ink" stroke-width="5"/>
+  <path d="M499 504h34m-90-44h33" fill="none" class="ink" stroke-width="8"/>
+  <path d="M123 447h54m611 34h50" fill="none" stroke="#77b7af" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  <path d="M90 510q5-13 11 0m9 0q5-20 10 0m727 13q5-16 10 0m10 0q4-11 8 0" fill="none" stroke="#85aa79" stroke-width="3" stroke-linecap="round"/>
+</svg>

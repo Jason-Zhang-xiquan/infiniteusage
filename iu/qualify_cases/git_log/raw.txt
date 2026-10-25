@@ -1,0 +1,1221 @@
+commit 3a9ee5d8c58666fb60648949b53e345b0150593d
+Author: dev1 <dev@example.com>
+Date:   Sat Oct 17 20:16:09 2026 +0100
+
+    fix(services): read body-stated back-off in decision/search upstream errors (#1547)
+    
+    buildUpstreamError (providers/base.ts) honours a Retry-After stated in
+    the error BODY (Gemini RetryInfo, prose 'try again in 45 seconds') when
+    the header is absent, so cooldowns land on the real reset time. The two
+    other upstream() chains added since — runDecision and runSearch — read
+    the header only: a body-only 429 fell back to the 60s heuristic and
+    reached the caller with no Retry-After hint. Both now parse the body
+    through parseStatedRetryMs, header still winning.
+    
+    Co-authored-by: dev1 <dev@example.com>
+
+ server/src/__tests__/services/decision.test.ts | 18 ++++++++++++++++++
+ server/src/__tests__/services/search.test.ts   | 11 +++++++++++
+ server/src/services/decision.ts                | 18 ++++++++++++++++--
+ server/src/services/search.ts                  | 12 ++++++++++--
+ 4 files changed, 55 insertions(+), 4 deletions(-)
+
+commit 9e9c3b50300410206efe814327a0c77f65c17bba
+Author: dev1 <dev@example.com>
+Date:   Sat Oct 17 20:15:46 2026 +0100
+
+    fix(retention): sweep the decision-model attempt log like every other log (#1543)
+    
+    decision_requests (added by #1537 for /v1/decisions) appends a row on every
+    attempt — including failures from cooling-down keys — with no prune of any
+    kind. Its only reader is the month-scoped count on Models → Decision, so
+    older rows are pure disk growth. Bound it by age (90d) and count (100k) on
+    the same 60s pass as the search log, with the same env knobs.
+    
+    Co-authored-by: dev1 <dev@example.com>
+
+ .env.example                                       |  7 +++
+ docs/en/env/01-variables.md                        |  2 +
+ .../__tests__/services/request-retention.test.ts   | 49 ++++++++++++++++++
+ server/src/services/request-retention.ts           | 59 ++++++++++++++++++++++
+ 4 files changed, 117 insertions(+)
+
+commit 06aa20604ad65388204ef12dee8da5cc5dc080ca
+Author: dev1 <dev@example.com>
+Date:   Sat Oct 17 20:15:08 2026 +0100
+
+    fix(retention): sweep expired dashboard sessions like every other TTL store (#1535)
+    
+    Expired session rows were uncollectable: validateSession deletes a row only
+    when its own token is checked again, and an expired token is never re-sent,
+    while every login mints a fresh row (30-day TTL). The desktop install mints a
+    session on every dashboard load, so it leaked one row per load forever. Fold
+    sessions into the pruneExpiredClaims sweep (#1529 series) so the 60s prune
+    gate reaps them; expired rows are dead weight for every reader.
+    
+    Co-authored-by: dev1 <dev@example.com>
+    Co-authored-by: dev2 <dev@example.com>
+
+ .../__tests__/services/request-retention.test.ts   | 22 ++++++++++++
+ server/src/services/request-retention.ts           | 42 +++++++++++++---------
+ 2 files changed, 48 insertions(+), 16 deletions(-)
+
+commit 9fe28f967932a6ac3182713c3a9391ce9602e701
+Author: dev3 <dev@example.com>
+Date:   Sat Oct 17 19:50:21 2026 +0100
+
+    chore(release): prepare v0.16.0 (#1561)
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/package-lock.json | 4 ++--
+ desktop/package.json      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit cece2df2af963b53e27f84a13277e941ea8d1c2f
+Author: dev3 <dev@example.com>
+Date:   Sat Oct 17 19:39:00 2026 +0100
+
+    fix(providers): remove the retired GitHub Models provider (#1557) (#1560)
+    
+    GitHub Models was retired on 30 July 2026 (#549). models.github.ai now
+    answers every request with 200 "OK" in plain text, so a GitHub key passed
+    its health check, custom GitHub models joined the fallback chain, and every
+    request routed there failed.
+    
+    - Remove the github provider: registration, Platform type, keys allowlist,
+      key-file import prefix, Keys page entry, built-in discovery, embeddings,
+      pricing rows, and the GitHub-only request trimming and limits.
+    - Migration 20261017_000002 removes leftover GitHub keys, models,
+      embedding/media rows, overrides, and their chain and profile entries.
+      Reversible: the removed rows are kept in settings for DOWN.
+    - Key health: an OpenAI-compatible /models that answers 200 with a body
+      that is not JSON is now an error, not a healthy key, so a service that
+      shuts down this way is caught. It never counts toward auto-disable.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ client/src/components/keys/shared.tsx              |   1 -
+ docs/en/api/01-rest-api.md                         |   4 +-
+ docs/en/architecture/00-high-level-index.md        |   1 -
+ docs/en/architecture/03-streaming-pipeline.md      |   1 -
+ docs/en/providers/01-supported-platforms.md        |   1 -
+ docs/zh-cn/api/01-rest-api.md                      |   4 +-
+ docs/zh-cn/architecture/00-high-level-index.md     |   1 -
+ docs/zh-cn/architecture/03-streaming-pipeline.md   |   1 -
+ docs/zh-cn/providers/01-supported-platforms.md     |   1 -
+ server/src/__tests__/db/idempotency.test.ts        |  11 +-
+ server/src/__tests__/db/intelligence-tiers.test.ts |   1 -
+ .../__tests__/db/migrate/endpoint-identity.test.ts |   9 +-
+ .../db/migrate/remove-github-provider.test.ts      |  62 ++++++++++
+ server/src/__tests__/db/migrate/roundtrip.test.ts  |   2 +
+ server/src/__tests__/lib/content.test.ts           |  69 +----------
+ server/src/__tests__/lib/sampling-params.test.ts   |   6 +-
+ .../src/__tests__/lib/unified-max-tokens.test.ts   |  20 ++--
+ .../src/__tests__/providers/openai-compat.test.ts  |  21 ++++
+ server/src/__tests__/routes/fallback.test.ts       |   3 +-
+ .../__tests__/routes/proxy-github-limits.test.ts   | 131 ---------------------
+ .../services/builtin-model-discovery.test.ts       |   9 --
+ server/src/__tests__/services/catalog-sync.test.ts |  14 ---
+ server/src/__tests__/services/embeddings.test.ts   |  11 --
+ server/src/__tests__/services/router.test.ts       |  36 ------
+ server/src/db/migrate/defaults.ts                  |   3 +
+ .../20261017_000002_remove_github_provider.ts      |  92 +++++++++++++++
+ server/src/db/model-pricing.ts                     |   5 -
+ server/src/lib/content.ts                          |  69 -----------
+ server/src/lib/key-parser.ts                       |   1 -
+ server/src/lib/sampling-params.ts                  |  21 +---
+ server/src/providers/index.ts                      |  12 +-
+ server/src/providers/openai-compat.ts              |  14 +++
+ server/src/routes/keys.ts                          |   5 +-
+ server/src/routes/proxy.ts                         |  22 +---
+ server/src/services/builtin-model-discovery.ts     |   2 +-
+ server/src/services/catalog-sync.ts                |   3 +-
+ server/src/services/embeddings.ts                  |   3 -
+ server/src/services/model-state.ts                 |   7 +-
+ server/src/services/provider-quota.ts              |   3 +-
+ server/src/services/router.ts                      |  17 +--
+ shared/types.ts                                    |   1 -
+ 41 files changed, 239 insertions(+), 461 deletions(-)
+
+commit 82a875d81e51ac706793d1bea938ad1d9953180a
+Author: dev4 <dev@example.com>
+Date:   Sat Oct 17 13:22:27 2026 -0500
+
+    fix(providers): retry a rejected pinned tool_choice as "required" on custom endpoints (#1549)
+    
+    LM Studio 0.4.26 answers 400 to an object-form tool_choice that pins one
+    function but accepts "required". When a custom endpoint rejects a pinned
+    tool_choice with 400, retry once with "required" and tools narrowed to the
+    pinned function. Endpoints that accept the object form still receive it.
+    
+    Closes #1548
+
+ .../src/__tests__/providers/openai-compat.test.ts  | 128 +++++++++++++++++++++
+ server/src/providers/openai-compat.ts              |  33 ++++++
+ 2 files changed, 161 insertions(+)
+
+commit f1708ffa29a369a1c17ce228bf509c134f054ed5
+Author: dev5 <dev@example.com>
+Date:   Sun Oct 18 02:00:14 2026 +0800
+
+    feat(server): tier selectors in the Claude family model map (#1444)
+    
+    Claude 家族映射（opus/sonnet/haiku/default）新增能力分层选择器：
+    值可写 tier:pro / tier:mid / tier:normal，按 V17 intelligence 分层
+    （size_label：Frontier/Large/Medium/Small）把该家族路由到整层模型池，
+    而不是钉住单个模型：
+    
+    - tier:pro → Frontier；tier:mid → Large；tier:normal → Medium+Small
+      （normal 吸收 Small，最小 provider 不被排除）
+    - /v1/messages 对 tier 家族构建与 group pin 相同的严格链：
+      层内沿用现有打分/故障转移，失败不会掉到层外无关模型
+    - 空层优雅降级为 auto；钉住单模型的旧映射行为完全不变
+    - PUT /api/settings/anthropic-map 直接接受新值（schema 已放行任意字符串）
+    - anthropic-map.test.ts 补 10 个用例：解析、整池解析、normal 吸收、
+      空层降级、单模型钉住优先
+    
+    Ref #1442
+    
+    Co-authored-by: dev6 <dev@example.com>
+    Co-authored-by: dev7 <dev@example.com>
+
+ .../src/__tests__/services/anthropic-map.test.ts   | 62 +++++++++++++++++++++-
+ server/src/routes/anthropic.ts                     | 16 +++++-
+ server/src/routes/settings.ts                      |  4 +-
+ server/src/services/anthropic-map.ts               | 52 +++++++++++++++++-
+ 4 files changed, 129 insertions(+), 5 deletions(-)
+
+commit 2763f5bd24522cc2df72d177c40e3a2c3ac08a02
+Author: dev5 <dev@example.com>
+Date:   Sun Oct 18 02:00:10 2026 +0800
+
+    feat(server): min-context-window pool floor with one-switch presets (#1445)
+    
+    新增路由池上下文窗口下限开关（issue #1442 的 32k/128k 一键关闭）：
+    
+    - lib/min-context-window.ts：settings 项 min_context_window，
+      预设 off/32k/128k/512k/1m（'1m' = 1,048,576，与目录一致）；
+      向上兼容——128k 保留 ≥128k 含 512k/1M 的所有模型
+    - 门控接入 fitsContextWindow 与 fitsContextWindowStrict：低于下限的
+      模型从所有链中排除，回退层也不会重新引入；context_window 为 NULL
+      视为未知，永不误杀（与现有约定一致）；坏值视为关闭，不会清空池子
+    - GET/PUT /api/settings/min-context-window：读取返回当前值+预设表，
+      写入校验 off|32k|128k|512k|1m（大小写不敏感），下一请求即生效
+    - min-context-window.test.ts 9 个用例：预设解析、大小写、坏值兜底、
+      向上兼容、未知窗口豁免
+    
+    Ref #1442
+    
+    Co-authored-by: dev6 <dev@example.com>
+    Co-authored-by: dev7 <dev@example.com>
+
+ .../src/__tests__/lib/min-context-window.test.ts   | 77 ++++++++++++++++++++++
+ server/src/lib/min-context-window.ts               | 54 +++++++++++++++
+ server/src/routes/settings.ts                      | 33 ++++++++++
+ server/src/services/router.ts                      | 12 +++-
+ 4 files changed, 174 insertions(+), 2 deletions(-)
+
+commit 981c327016e63762688a7a7e609a0c48b2544de5
+Author: dev8 <dev@example.com>
+Date:   Sat Oct 17 23:00:06 2026 +0500
+
+    Fix/CloudFlare: preserve image_url blocks for vision requests (#1462)
+    
+    * fix(cloudflare): preserve image_url blocks in user messages
+    
+    * test(cloudflare): cover image_url in chat and streaming requests
+
+ server/src/__tests__/providers/cloudflare.test.ts | 66 +++++++++++++++++++++++
+ server/src/providers/cloudflare.ts                |  9 +++-
+ 2 files changed, 73 insertions(+), 2 deletions(-)
+
+commit af66698b17a32e21ebfadb0902afbf3780022b8c
+Author: dev9 <dev@example.com>
+Date:   Sun Oct 18 07:00:02 2026 +1300
+
+    fix(groq): clamp reasoning_effort to low/medium/high (#1480)
+    
+    Groq rejects any reasoning_effort outside its low/medium/high enum with a 400
+    ("reasoning_effort must be one of low, medium, or high", seen on
+    openai/gpt-oss-120b). A client sending 'none' or 'minimal' therefore lost the
+    platform for that request: the failure classifies as a provider bad request, so
+    the router fell through to the next candidate instead of answering from Groq.
+    
+    The policy table already models this for GitHub Models, whose enum is the same
+    three values, so Groq now uses the same clamp rather than forwarding the value
+    verbatim. Clamping instead of dropping keeps the knob on the wire, at the
+    weakest setting Groq accepts.
+    
+    Test updated in the same file: the per-platform clamping case now covers groq,
+    and the "platform without a restriction" example moves to cerebras.
+
+ server/src/__tests__/lib/sampling-params.test.ts | 10 ++++++++--
+ server/src/lib/sampling-params.ts                | 12 ++++++++++--
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+
+commit 369c47128edf92d30abb59d7b7c0e46c43e1ce57
+Author: dev3 <dev@example.com>
+Date:   Sat Oct 17 10:01:36 2026 +0100
+
+    fix(llmtr): switch back on keys the old probe disabled; explain unchecked keys (#1459) (#1551)
+    
+    LLMTR keys added before v0.13.3 were auto-disabled by the key-validation
+    probe (LLMTR answers every probe with 403), and nothing switched them back
+    on. Since #1471 an LLMTR key turns healthy only after serving a request, so
+    those keys stayed off and "unchecked" for good, shown as a red issue.
+    
+    - Migration re-enables LLMTR keys that are off and marked invalid (and only
+      those); reversible via the ids it records.
+    - Pasting a new key value into an existing key switches it on.
+    - GET /api/keys reports autoHealthCheck (false for LLMTR) and, for those keys,
+      modelsAvailable.
+    - Keys page: "unchecked" is no longer counted as an issue; LLMTR keys explain
+      why they are unchecked and whether the catalog has models for them yet;
+      Check now says why it sends nothing. Strings in all 60 locales.
+    - Keys tab bar wraps onto its own line and scrolls on phones instead of
+      widening the page (SegmentedControl, PageHeader actions).
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ client/src/components/keys/provider-list.tsx       |  25 ++++-
+ client/src/components/page-header.tsx              |   2 +-
+ client/src/components/ui/segmented-control.tsx     |   5 +-
+ client/src/i18n/locales/am.json                    |   2 +
+ client/src/i18n/locales/ar.json                    |   2 +
+ client/src/i18n/locales/az.json                    |   2 +
+ client/src/i18n/locales/bg.json                    |   2 +
+ client/src/i18n/locales/bn.json                    |   2 +
+ client/src/i18n/locales/cs.json                    |   2 +
+ client/src/i18n/locales/da.json                    |   2 +
+ client/src/i18n/locales/de.json                    |   2 +
+ client/src/i18n/locales/el.json                    |   2 +
+ client/src/i18n/locales/en.json                    |   2 +
+ client/src/i18n/locales/es.json                    |   2 +
+ client/src/i18n/locales/fa.json                    |   2 +
+ client/src/i18n/locales/fi.json                    |   2 +
+ client/src/i18n/locales/fr.json                    |   2 +
+ client/src/i18n/locales/gu.json                    |   2 +
+ client/src/i18n/locales/ha.json                    |   2 +
+ client/src/i18n/locales/he.json                    |   2 +
+ client/src/i18n/locales/hi.json                    |   2 +
+ client/src/i18n/locales/hr.json                    |   2 +
+ client/src/i18n/locales/hu.json                    |   2 +
+ client/src/i18n/locales/id.json                    |   2 +
+ client/src/i18n/locales/ig.json                    |   2 +
+ client/src/i18n/locales/it.json                    |   2 +
+ client/src/i18n/locales/ja.json                    |   2 +
+ client/src/i18n/locales/ka.json                    |   2 +
+ client/src/i18n/locales/km.json                    |   2 +
+ client/src/i18n/locales/kn.json                    |   2 +
+ client/src/i18n/locales/ko.json                    |   2 +
+ client/src/i18n/locales/lt.json                    |   2 +
+ client/src/i18n/locales/ml.json                    |   2 +
+ client/src/i18n/locales/mr.json                    |   2 +
+ client/src/i18n/locales/ms.json                    |   2 +
+ client/src/i18n/locales/my.json                    |   2 +
+ client/src/i18n/locales/ne.json                    |   2 +
+ client/src/i18n/locales/nl.json                    |   2 +
+ client/src/i18n/locales/no.json                    |   2 +
+ client/src/i18n/locales/or.json                    |   2 +
+ client/src/i18n/locales/pa.json                    |   2 +
+ client/src/i18n/locales/pl.json                    |   2 +
+ client/src/i18n/locales/pt-BR.json                 |   2 +
+ client/src/i18n/locales/pt-PT.json                 |   2 +
+ client/src/i18n/locales/ro.json                    |   2 +
+ client/src/i18n/locales/ru.json                    |   2 +
+ client/src/i18n/locales/si.json                    |   2 +
+ client/src/i18n/locales/sk.json                    |   2 +
+ client/src/i18n/locales/sr.json                    |   2 +
+ client/src/i18n/locales/sv.json                    |   2 +
+ client/src/i18n/locales/sw.json                    |   2 +
+ client/src/i18n/locales/ta.json                    |   2 +
+ client/src/i18n/locales/te.json                    |   2 +
+ client/src/i18n/locales/th.json                    |   2 +
+ client/src/i18n/locales/tl.json                    |   2 +
+ client/src/i18n/locales/tr.json                    |   2 +
+ client/src/i18n/locales/uk.json                    |   2 +
+ client/src/i18n/locales/ur.json                    |   2 +
+ client/src/i18n/locales/uz.json                    |   2 +
+ client/src/i18n/locales/vi.json                    |   2 +
+ client/src/i18n/locales/yo.json                    |   2 +
+ client/src/i18n/locales/zh-CN.json                 |   2 +
+ client/src/i18n/locales/zh-TW.json                 |   2 +
+ client/src/pages/KeysPage.tsx                      |   1 +
+ server/src/__tests__/db/migrate/roundtrip.test.ts  |   2 +
+ .../__tests__/routes/keys-llmtr-unchecked.test.ts  | 117 +++++++++++++++++++++
+ server/src/db/migrate/defaults.ts                  |   3 +
+ .../20261017_000001_llmtr_reenable_keys.ts         |  44 ++++++++
+ server/src/routes/keys.ts                          |  18 ++++
+ shared/types.ts                                    |   6 ++
+ 70 files changed, 335 insertions(+), 8 deletions(-)
+
+commit ffe5327176c3b7c771e262c51de85c22cfd4c149
+Author: dev3 <dev@example.com>
+Date:   Fri Oct 16 11:03:36 2026 +0100
+
+    feat(decisions): decision models from the catalog, /v1/decisions and a Models → Decision tab (#1537)
+    
+    Decision models answer typed questions (choice, yes/no, score) with
+    probabilities instead of generated text. They arrive only through a new
+    optional catalog section, `decisionModels`, and land in media_models with
+    modality 'decision', riding on the user's existing Cloudflare and OpenRouter
+    keys. Launch models: Cloudflare Clef Flash (@cf/cloudflare/clef-flash, via
+    Workers AI ai/run) and OpenRouter Mercury Decide (inception/mercury-decide:free,
+    via /api/alpha/decisions).
+    
+    - POST /v1/decisions (System One body: model?, state, questions), alias
+      POST /v1/systemone, GET /v1/decisions/models; 'auto' fails over across
+      models and keys, cooldowns per model+key, decision_requests log.
+    - Chat routing never consults these models and they never appear in
+      /v1/models or the image/audio media lists.
+    - Dashboard: Models → Decision with the model list, on/off toggle, a
+      "Try it" box and an example request. Models tabs reordered to Chat, Image,
+      Video, Audio, Embeddings, Decision, Search, Fusion. The page header no
+      longer lets the tab row push the page wider than a phone screen.
+    - OpenAPI docs, 60 locales, tests for service, routes, catalog sync,
+      migration round trip and the page.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ client/src/App.tsx                                 |   5 +-
+ client/src/components/command-palette.tsx          |   4 +-
+ client/src/components/decision-models.test.tsx     | 106 ++++++
+ client/src/components/decision-models.tsx          | 242 +++++++++++++
+ client/src/components/models-tabs.tsx              |   7 +-
+ client/src/components/page-header.tsx              |   2 +-
+ client/src/i18n/locales/am.json                    |  24 ++
+ client/src/i18n/locales/ar.json                    |  24 ++
+ client/src/i18n/locales/az.json                    |  24 ++
+ client/src/i18n/locales/bg.json                    |  24 ++
+ client/src/i18n/locales/bn.json                    |  24 ++
+ client/src/i18n/locales/cs.json                    |  24 ++
+ client/src/i18n/locales/da.json                    |  24 ++
+ client/src/i18n/locales/de.json                    |  24 ++
+ client/src/i18n/locales/el.json                    |  24 ++
+ client/src/i18n/locales/en.json                    |  24 ++
+ client/src/i18n/locales/es.json                    |  24 ++
+ client/src/i18n/locales/fa.json                    |  24 ++
+ client/src/i18n/locales/fi.json                    |  24 ++
+ client/src/i18n/locales/fr.json                    |  24 ++
+ client/src/i18n/locales/gu.json                    |  24 ++
+ client/src/i18n/locales/ha.json                    |  24 ++
+ client/src/i18n/locales/he.json                    |  24 ++
+ client/src/i18n/locales/hi.json                    |  24 ++
+ client/src/i18n/locales/hr.json                    |  24 ++
+ client/src/i18n/locales/hu.json                    |  24 ++
+ client/src/i18n/locales/id.json                    |  24 ++
+ client/src/i18n/locales/ig.json                    |  24 ++
+ client/src/i18n/locales/it.json                    |  24 ++
+ client/src/i18n/locales/ja.json                    |  24 ++
+ client/src/i18n/locales/ka.json                    |  24 ++
+ client/src/i18n/locales/km.json                    |  24 ++
+ client/src/i18n/locales/kn.json                    |  24 ++
+ client/src/i18n/locales/ko.json                    |  24 ++
+ client/src/i18n/locales/lt.json                    |  24 ++
+ client/src/i18n/locales/ml.json                    |  24 ++
+ client/src/i18n/locales/mr.json                    |  24 ++
+ client/src/i18n/locales/ms.json                    |  24 ++
+ client/src/i18n/locales/my.json                    |  24 ++
+ client/src/i18n/locales/ne.json                    |  24 ++
+ client/src/i18n/locales/nl.json                    |  24 ++
+ client/src/i18n/locales/no.json                    |  24 ++
+ client/src/i18n/locales/or.json                    |  24 ++
+ client/src/i18n/locales/pa.json                    |  24 ++
+ client/src/i18n/locales/pl.json                    |  24 ++
+ client/src/i18n/locales/pt-BR.json                 |  24 ++
+ client/src/i18n/locales/pt-PT.json                 |  24 ++
+ client/src/i18n/locales/ro.json                    |  24 ++
+ client/src/i18n/locales/ru.json                    |  24 ++
+ client/src/i18n/locales/si.json                    |  24 ++
+ client/src/i18n/locales/sk.json                    |  24 ++
+ client/src/i18n/locales/sr.json                    |  24 ++
+ client/src/i18n/locales/sv.json                    |  24 ++
+ client/src/i18n/locales/sw.json                    |  24 ++
+ client/src/i18n/locales/ta.json                    |  24 ++
+ client/src/i18n/locales/te.json                    |  24 ++
+ client/src/i18n/locales/th.json                    |  24 ++
+ client/src/i18n/locales/tl.json                    |  24 ++
+ client/src/i18n/locales/tr.json                    |  24 ++
+ client/src/i18n/locales/uk.json                    |  24 ++
+ client/src/i18n/locales/ur.json                    |  24 ++
+ client/src/i18n/locales/uz.json                    |  24 ++
+ client/src/i18n/locales/vi.json                    |  24 ++
+ client/src/i18n/locales/yo.json                    |  24 ++
+ client/src/i18n/locales/zh-CN.json                 |  24 ++
+ client/src/i18n/locales/zh-TW.json                 |  24 ++
+ client/src/lib/decision.test.ts                    |  20 ++
+ client/src/lib/decision.ts                         |  54 +++
+ client/src/pages/DecisionPage.tsx                  |   5 +
+ server/src/__tests__/db/migrate/roundtrip.test.ts  |   2 +
+ server/src/__tests__/helpers/decision-models.ts    |  16 +
+ server/src/__tests__/routes/decisions.test.ts      | 145 ++++++++
+ server/src/__tests__/services/catalog-sync.test.ts |  82 +++++
+ server/src/__tests__/services/decision.test.ts     | 160 +++++++++
+ server/src/app.ts                                  |   2 +
+ server/src/db/migrate/defaults.ts                  |   3 +
+ .../20261016_000001_decision_requests.ts           |  42 +++
+ server/src/docs/openapi.ts                         | 112 ++++++
+ server/src/lib/proxy.ts                            |   2 +-
+ server/src/routes/decisions.ts                     |  65 ++++
+ server/src/routes/proxy.ts                         |  83 +++++
+ server/src/services/catalog-sync.ts                |  83 +++++
+ server/src/services/decision.ts                    | 398 +++++++++++++++++++++
+ server/src/services/media.ts                       |   7 +-
+ 84 files changed, 3077 insertions(+), 10 deletions(-)
+
+commit 53f01e871a817e29531e7cc2d06e7763c69260b8
+Author: dev1 <dev@example.com>
+Date:   Thu Oct 15 23:35:00 2026 +0100
+
+    fix(output-cap): key learned output ceilings per endpoint, not just model (#1532)
+    
+    * fix(output-cap): key learned output ceilings per endpoint, not just model
+    
+    All custom relays share platform 'custom', so a max_tokens ceiling learned
+    from relay A silently clamped relay B's replies to relay A's output limit
+    until restart — the cross-relay collapse #651 (endpoint_scope) fixed for
+    model rows and #1230 (lib/tool-capability.ts) fixed for tool-rejection
+    memory, but output-cap.ts never migrated to modelStatsKey. Route through
+    modelStatsKey(platform, modelId, endpointScope) so a ceiling belongs to the
+    relay that reported it; catalog platforms (empty scope) keep their existing
+    identity verbatim. 3 regression tests fail on main, pass with the fix.
+    
+    * docs(output-cap): fix doubled word in the module comment
+    
+    Co-Authored-By: dev2 <dev@example.com>
+    
+    ---------
+    
+    Co-authored-by: dev1 <dev@example.com>
+    Co-authored-by: dev3 <dev@example.com>
+    Co-authored-by: dev2 <dev@example.com>
+
+ server/src/__tests__/lib/module-purity.test.ts |  2 --
+ server/src/__tests__/lib/output-cap.test.ts    | 35 ++++++++++++++++++++++++++
+ server/src/lib/fallback-loop.ts                |  2 +-
+ server/src/lib/output-cap.ts                   | 24 ++++++++++++------
+ 4 files changed, 52 insertions(+), 11 deletions(-)
+
+commit 7ae0ef193d297c02479efed2a07946c44457512b
+Author: dev3 <dev@example.com>
+Date:   Thu Oct 15 23:21:03 2026 +0100
+
+    chore(release): prepare v0.15.0 (#1534)
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/package-lock.json | 4 ++--
+ desktop/package.json      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 2f030d497fcf25f0767f919be00e4a81f4517a05
+Author: dev3 <dev@example.com>
+Date:   Thu Oct 15 23:10:30 2026 +0100
+
+    fix(desktop): sign the dashboard in from any local browser tab, never show Sign In (#1399) (#1533)
+    
+    The desktop app's account is a hidden machine user with a random password,
+    and only the app window could get a session (over IPC). Opening the same
+    dashboard in a normal browser tab showed a Sign In form nobody could pass.
+    
+    On a desktop install (FREEAPI_DESKTOP=1) the server now mints the session
+    itself through POST /api/auth/desktop-session, and /api/auth/status reports
+    desktop: true so the dashboard uses it instead of the form. Guards: loopback
+    socket with no remote forwarded hop, a localhost Host header (blocks DNS
+    rebinding), and no cross-site Sec-Fetch-Site/Origin. Web and Docker installs
+    never set the flag and keep their login; LAN-access callers still sign in.
+    
+    The desktop shell's IPC session and the new route share one helper,
+    desktopSessionToken() in services/auth.ts.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ README.md                                          |   2 +-
+ .../components/auth-gate.desktop-browser.test.tsx  |  93 ++++++++++++++++++
+ client/src/components/auth-gate.tsx                |  12 ++-
+ desktop/src/server-host.ts                         |   9 +-
+ docs/en/install/01-install.md                      |   3 +
+ .../__tests__/routes/auth-desktop-session.test.ts  | 106 +++++++++++++++++++++
+ server/src/routes/auth.ts                          |  64 +++++++++++++
+ server/src/services/auth.ts                        |  12 +++
+ 8 files changed, 292 insertions(+), 9 deletions(-)
+
+commit 2df88a76969d94c6b001d00f18fe8749667f4f4b
+Author: dev8 <dev@example.com>
+Date:   Fri Oct 16 02:57:41 2026 +0500
+
+    feat(ui): add bulk outbound proxy routing controls and align switches (#1503)
+
+ .../src/components/keys/proxy-settings-section.tsx | 83 ++++++++++++++++------
+ 1 file changed, 60 insertions(+), 23 deletions(-)
+
+commit 42fe991c7d2504838bd49a2ada877adbe55c9cfa
+Author: dev10 <dev@example.com>
+Date:   Thu Oct 15 23:57:37 2026 +0200
+
+    fix(lockfile): point resolved URLs to registry.npmjs.org (#1509)
+    
+    40 resolved URLs in package-lock.json pointed at registry.npmmirror.com,
+    which is unreachable from egress-restricted environments. Tarball paths
+    and integrity hashes are identical on both hosts, so only the host prefix
+    changes.
+    
+    
+    Claude-Session: https://claude.ai/code/session_01NqRix3hPjujXiNgYdAvjJo
+    
+    Co-authored-by: dev11 <dev@example.com>
+
+ package-lock.json | 80 +++++++++++++++++++++++++++----------------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
+
+commit 20a1c4fc400968527546e3e24c049e0743ea7644
+Author: dev5 <dev@example.com>
+Date:   Fri Oct 16 05:57:32 2026 +0800
+
+    feat(mcp): provider_list, quota_outlook and clear_cache tools (#1513)
+    
+    给 coding agent 补三个诊断/运维工具：
+    - provider_list：全部启用 key 的平台清单及各状态计数，健康度一眼可查
+    - quota_outlook：免费池余量预测（剩余请求、燃烧速率、预计耗尽时间），
+      长任务前先看哪个池要跑干
+    - clear_cache：清空响应缓存，唯一一个 destructive 工具，标注 destructiveHint
+    
+    测试断言工具清单与 destructive 白名单同步更新，20/20 通过。
+    
+    Co-authored-by: dev6 <dev@example.com>
+
+ server/src/__tests__/routes/mcp.test.ts | 10 ++++--
+ server/src/routes/mcp.ts                | 59 +++++++++++++++++++++++++++++++--
+ 2 files changed, 65 insertions(+), 4 deletions(-)
+
+commit e71091fd09454c6678b0f92ceecd19bfcf1fd600
+Author: dev12 <dev@example.com>
+Date:   Thu Oct 15 14:57:28 2026 -0700
+
+    fix(cli): launch Windows command shims (#1517)
+
+ cli/package.json      |  2 ++
+ cli/src/index.test.ts | 32 ++++++++++++++++++++++++++++++++
+ cli/src/index.ts      |  2 +-
+ package-lock.json     | 12 ++++++++++++
+ 4 files changed, 47 insertions(+), 1 deletion(-)
+
+commit dd266080008603b5b941cff55a41360851c7c840
+Author: dev13 <dev@example.com>
+Date:   Thu Oct 15 23:57:24 2026 +0200
+
+    fix(keys): sweep key-bound model rows when a standard key is deleted (#1522)
+    
+    Part 2 of owner/repo#1516.
+    
+    DELETE /api/keys/:id cascaded model cleanup only for platform=custom,
+    and the catalog prune only considers key_id IS NULL rows, so any model
+    row pinned to a deleted standard-platform key lingered enabled in the
+    fallback chain and model list forever.
+    
+    The delete handler now removes key-bound rows in models,
+    embedding_models and media_models plus their fallback_config rows for
+    any platform. Shared catalog rows (key_id NULL) are untouched.
+    catalog-sync gains the same sweep as a backstop for orphans from older
+    builds or manual DB edits.
+    
+    Test Plan: new tests in keys.test.ts (DELETE sweeps chat+fallback+
+    embedding+media key-bound rows, shared rows survive) and
+    catalog-sync.test.ts (applyCatalog sweeps orphan rows and counts them);
+    targeted files 100 passed; full server suite 4054 passed with 3
+    timing-flaky failures in fallback-loop-hedge and compression that pass
+    in isolation and do not import either changed file; eslint and tsc
+    clean.
+
+ server/src/__tests__/routes/keys.test.ts           | 34 ++++++++++++++++++++++
+ server/src/__tests__/services/catalog-sync.test.ts | 21 +++++++++++++
+ server/src/routes/keys.ts                          |  9 ++++++
+ server/src/services/catalog-sync.ts                | 15 ++++++++++
+ 4 files changed, 79 insertions(+)
+
+commit b097a227b5e266ec631f0dc3febe7dd8af8a42f6
+Author: dev14 <dev@example.com>
+Date:   Thu Oct 15 17:57:20 2026 -0400
+
+    fix(server): classify ContextWindowExceededError as context_too_large (#1527)
+    
+    Agnes AI and some OpenAI-compat aggregators reject an over-long prompt with
+    a bare ContextWindowExceededError whose nested OpenAIException body arrives
+    truncated mid-sentence ("The input (2250074 tokens) is longer than the mo…"),
+    so the "maximum context length" marker never sees its target text and the
+    error fell through to provider_bad_request.
+    
+    Add the exception class name and the "input … longer than the max/maximum"
+    family to isContextTooLargeError, and cover both in exhaustion-statuses tests.
+
+ server/src/__tests__/lib/exhaustion-statuses.test.ts | 20 ++++++++++++++++++++
+ server/src/lib/error-classify.ts                     | 10 ++++++++++
+ 2 files changed, 30 insertions(+)
+
+commit 08a7100d9907c524bcafa92dae509bb136a12944
+Author: dev15 <dev@example.com>
+Date:   Thu Oct 15 14:41:29 2026 -0700
+
+    feat(search): Parallel as a keyless web search engine (#1465)
+    
+    Parallel joins the web search chain as a keyless engine: anonymous Search MCP by default, REST /v1/search with a real API key. Replaces the original OpenCode-only example. The engine row ships through the catalog's searchEngines registry (Premium first, free after 30 days).
+    
+    Co-Authored-By: dev16 <dev@example.com>
+    Co-Authored-By: dev2 <dev@example.com>
+
+ client/src/components/command-palette.tsx          |  2 +-
+ client/src/components/keys/add-key-form.tsx        |  2 +-
+ client/src/lib/routing.ts                          |  1 +
+ client/src/lib/search.ts                           |  8 ++-
+ .../__tests__/providers/search-providers.test.ts   | 27 +++++++-
+ server/src/__tests__/routes/keys.test.ts           |  4 +-
+ server/src/__tests__/services/search.test.ts       | 81 ++++++++++++++++++++++
+ server/src/docs/openapi.ts                         |  4 +-
+ server/src/lib/key-parser.ts                       |  2 +
+ server/src/lib/search-platforms.ts                 |  2 +-
+ server/src/providers/index.ts                      |  3 +
+ server/src/providers/parallel.ts                   | 42 +++++++++++
+ server/src/routes/keys.ts                          |  2 +-
+ server/src/routes/mcp.ts                           |  2 +-
+ server/src/services/search.ts                      | 66 +++++++++++++++++-
+ shared/types.ts                                    |  3 +-
+ 16 files changed, 236 insertions(+), 15 deletions(-)
+
+commit 9a0ad4b7810eb17c94aebe1c55dec515d16a84ea
+Author: dev1 <dev@example.com>
+Date:   Thu Oct 15 22:11:17 2026 +0100
+
+    fix(health): opt-in parking of keys after a sustained transport-error streak (#1510) (#1530)
+    
+    Counts consecutive transport errors per key and, when HEALTH_TRANSPORT_PARK_AFTER is set (6 suggested), parks the key at 'error' until a probe or served request succeeds. Off by default: network errors never change a key's status unless the operator opts in.
+    
+    Co-Authored-By: dev2 <dev@example.com>
+
+ docs/en/env/01-variables.md                        |   1 +
+ .../services/health-transport-park.test.ts         | 151 +++++++++++++++++++++
+ server/src/services/health.ts                      |  96 +++++++++++--
+ 3 files changed, 239 insertions(+), 9 deletions(-)
+
+commit eb93fc3bb30f5adbfa7ab8bcaef7909c0e24daa0
+Author: dev1 <dev@example.com>
+Date:   Thu Oct 15 22:11:02 2026 +0100
+
+    fix(retention): bound the search_requests log like every other log (#1525)
+    
+    The web-search log (#1174) was the one request log with no prune: every
+    search attempt (agent web_search alone can emit up to 20 per request)
+    appended a row forever, while its own analytics only answer windows up
+    to 90d. Add SEARCH_LOGS_RETENTION_DAYS=90 / SEARCH_LOGS_MAX_ROWS=100000
+    with pruneSearchLogs folded into the existing 60s analytics pass, the
+    same shape as server_logs. Documented in .env.example and the env docs.
+    
+    Co-authored-by: dev1 <dev@example.com>
+
+ .env.example                                       |  7 +++
+ docs/en/env/01-variables.md                        |  2 +
+ .../__tests__/services/request-retention.test.ts   | 49 ++++++++++++++++++
+ server/src/services/request-retention.ts           | 58 ++++++++++++++++++++++
+ 4 files changed, 116 insertions(+)
+
+commit 7cb839a3578cc628bb80dd3ae5bf41b5b6a10c27
+Author: dev1 <dev@example.com>
+Date:   Thu Oct 15 22:10:23 2026 +0100
+
+    fix(retention): sweep expired idempotency claims and cache rows (#1529)
+    
+    idempotency_claims grew forever: storeIdempotencyResult only deletes
+    expired rows for the SAME key hash it is about to overwrite, so a claim
+    whose hash never repeats (a client sending a fresh UUID per request) sat
+    in the DB with its full response JSON. response_cache swept expired rows
+    only at startup. Fold both TTL sweeps into the existing 60s prune pass;
+    both deletes are index-range walks over expires_at_ms.
+    
+    Co-authored-by: dev1 <dev@example.com>
+
+ .../__tests__/services/request-retention.test.ts   | 26 +++++++++++++++++
+ server/src/services/request-retention.ts           | 33 ++++++++++++++++++++++
+ 2 files changed, 59 insertions(+)
+
+commit 82fa06a3627ef353378871eeed78f8712d0e50ad
+Author: dev1 <dev@example.com>
+Date:   Thu Oct 15 22:10:17 2026 +0100
+
+    fix(quota): put Auray in one shared monthly-credit pool (#1524)
+    
+    Auray shipped in #1518 without provider-quota registration: inferPoolForPlatform
+    fell through to auray::<model>, so a 429 on one Auray model only benched that
+    model's pool while the router kept hammering sibling models on the same
+    exhausted wallet. Its credits are one monthly account-wide grant shared across
+    chat and embeddings (per its own docs and the provider comment), exactly
+    Speka's shape — register the shared pool and cover it in the pool-inference
+    test.
+    
+    Co-authored-by: dev1 <dev@example.com>
+
+ server/src/__tests__/services/provider-quota.test.ts | 1 +
+ server/src/services/provider-quota.ts                | 4 ++++
+ 2 files changed, 5 insertions(+)
+
+commit 8004d1c6e8d830ac9256cea49e7ff9cca2c8256e
+Author: dev17 <dev@example.com>
+Date:   Thu Oct 15 22:10:12 2026 +0100
+
+    chore(deps): bump actions/setup-node from 7.0.0 to 7.1.0 (#1519)
+    
+    Bumps [actions/setup-node](https://github.com/owner/setup-node) from 7.0.0 to 7.1.0.
+    - [Release notes](https://github.com/owner/setup-node/releases)
+    - [Commits](https://github.com/owner/setup-node/compare/820762786026740c76f36085b0efc47a31fe5020...949feb2413d6458794dcd2491c4babbbce0c15c1)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/setup-node
+      dependency-version: 7.1.0
+      dependency-type: direct:production
+      update-type: version-update:semver-minor
+    ...
+    
+    Signed-off-by: dev17 <dev@example.com>
+    Co-authored-by: dev17 <dev@example.com>
+
+ .github/workflows/ci.yml              | 2 +-
+ .github/workflows/cli-release.yml     | 2 +-
+ .github/workflows/desktop-release.yml | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit bf82126b3ac2cb5a060ebf44134bd75f7eb87233
+Author: dev17 <dev@example.com>
+Date:   Thu Oct 15 22:10:07 2026 +0100
+
+    chore(deps): bump actions/upload-artifact from 7.0.1 to 7.0.2 (#1520)
+    
+    Bumps [actions/upload-artifact](https://github.com/owner/upload-artifact) from 7.0.1 to 7.0.2.
+    - [Release notes](https://github.com/owner/upload-artifact/releases)
+    - [Commits](https://github.com/owner/upload-artifact/compare/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a...cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/upload-artifact
+      dependency-version: 7.0.2
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dev17 <dev@example.com>
+    Co-authored-by: dev17 <dev@example.com>
+
+ .github/workflows/desktop-release.yml | 4 ++--
+ .github/workflows/docker.yml          | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit f233e0777f67cf09594f3d0a784f967b0ca84b04
+Author: dev17 <dev@example.com>
+Date:   Thu Oct 15 22:10:02 2026 +0100
+
+    chore(deps): bump actions/download-artifact from 8.0.1 to 8.0.2 (#1521)
+    
+    Bumps [actions/download-artifact](https://github.com/owner/download-artifact) from 8.0.1 to 8.0.2.
+    - [Release notes](https://github.com/owner/download-artifact/releases)
+    - [Commits](https://github.com/owner/download-artifact/compare/3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c...9000827ccba6bdab643e8b6fd33ac0654aef8333)
+    
+    ---
+    updated-dependencies:
+    - dependency-name: actions/download-artifact
+      dependency-version: 8.0.2
+      dependency-type: direct:production
+      update-type: version-update:semver-patch
+    ...
+    
+    Signed-off-by: dev17 <dev@example.com>
+    Co-authored-by: dev17 <dev@example.com>
+
+ .github/workflows/desktop-release.yml | 2 +-
+ .github/workflows/docker.yml          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 1b80dc3fafe38d383308996cb30b944dbe267691
+Author: dev3 <dev@example.com>
+Date:   Thu Oct 15 21:58:26 2026 +0100
+
+    feat: support catalog-managed LLMTR embeddings (#1531)
+
+ .../__tests__/services/llmtr-embeddings.test.ts    | 80 ++++++++++++++++++++++
+ server/src/services/embeddings.ts                  | 13 +++-
+ 2 files changed, 91 insertions(+), 2 deletions(-)
+
+commit 5a3abac8b4286cdfdc6dd53f1b99290cc804be2d
+Author: dev3 <dev@example.com>
+Date:   Thu Oct 15 07:34:40 2026 +0100
+
+    feat(providers): add Auray and preserve native Gemini TTS WAV (#1518)
+    
+    * feat(providers): add Auray chat and embeddings with Gemini WAV support
+    
+    * fix(auray): advertise only supported generation controls
+
+ client/src/components/keys/shared.tsx              |  1 +
+ client/src/lib/routing.ts                          |  1 +
+ server/src/__tests__/providers/auray.test.ts       | 91 ++++++++++++++++++++++
+ .../__tests__/services/auray-embeddings.test.ts    | 61 +++++++++++++++
+ server/src/__tests__/services/media.test.ts        | 21 +++++
+ server/src/lib/key-parser.ts                       |  2 +
+ server/src/lib/sampling-params.ts                  |  6 ++
+ server/src/providers/auray.ts                      | 68 ++++++++++++++++
+ server/src/providers/index.ts                      |  2 +
+ server/src/routes/keys.ts                          |  1 +
+ server/src/services/embeddings.ts                  | 18 ++++-
+ server/src/services/media.ts                       | 12 ++-
+ shared/types.ts                                    |  2 +
+ 13 files changed, 279 insertions(+), 7 deletions(-)
+
+commit bf1660454fd4e1889fe0c1b5cd10f2af6605afa0
+Author: dev3 <dev@example.com>
+Date:   Wed Oct 14 10:04:30 2026 +0100
+
+    fix(premium): refresh every model list after a license change (#1507)
+    
+    Activating or removing a Premium key re-syncs the catalog, but the
+    Premium page only invalidated ['premium'] and ['models']. The chat
+    (['fallback']), embeddings, media and search-engine lists stayed cached,
+    so going straight to Models after Activate showed the free list until a
+    reload or the 30 s staleTime ran out.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ client/src/pages/PremiumPage.tsx | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+commit 57c0669233bbe0c70a0f9f9927613192be948773
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 17:31:14 2026 +0100
+
+    chore(release): prepare v0.14.2 (#1499)
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/package-lock.json | 4 ++--
+ desktop/package.json      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 96b6367c2e9563e3ff0e25561f3227df81ef5979
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 17:20:36 2026 +0100
+
+    ci(desktop): notarize the app in our own afterSign hook with stapling retries (#1498)
+    
+    * ci(desktop): notarize the app in our own afterSign hook with stapling retries
+    
+    electron-builder's built-in notarization staples the .app once and fails the
+    whole build when Apple's ticket lookup drops the connection (Error 68), which
+    blocked the v0.14.1 Intel installer after #1495 had already fixed the same
+    failure on the DMG. Submit with notarytool, require Accepted (printing the
+    notary log otherwise), then staple + validate with up to 5 attempts. Same
+    credentials as before; unsigned and credential-less builds skip as they did.
+    
+    Co-Authored-By: dev2 <dev@example.com>
+    
+    * test(desktop): build the expected app path with path.join so the hook test passes on Windows
+    
+    Co-Authored-By: dev2 <dev@example.com>
+    
+    ---------
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/electron-builder.yml                      |   6 +-
+ desktop/scripts/after-sign-notarize.mjs           | 108 ++++++++++++++++++++++
+ desktop/src/__tests__/after-sign-notarize.test.ts | 101 ++++++++++++++++++++
+ 3 files changed, 214 insertions(+), 1 deletion(-)
+
+commit 6e9f9c4120f01376a01c495058c4b23de798e0ff
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 16:52:10 2026 +0100
+
+    chore(release): prepare v0.14.1 (#1496)
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/package-lock.json | 4 ++--
+ desktop/package.json      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 05f5bc25bb2feadcb7210481ba8330e83840e3a9
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 16:42:57 2026 +0100
+
+    ci(desktop): make the Intel macOS release build reliable (staple retry, pinned Python) (#1495)
+    
+    * ci(desktop): retry stapling when Apple's ticket lookup drops the connection
+    
+    The macos-15-intel job failed v0.14.0 three times at stapler staple/validate
+    with error 68 (NSURLErrorDomain -1005) right after notarization was accepted.
+    Retry staple + validate up to five times with a short backoff.
+    
+    Co-Authored-By: dev2 <dev@example.com>
+    
+    * ci(desktop): pin Python 3.11 on the macOS builds for node-gyp
+    
+    node-gyp still imports distutils (gone in Python 3.12); some macos-15-intel
+    images default to a Python without it, which broke the better-sqlite3
+    rebuild there intermittently.
+    
+    Co-Authored-By: dev2 <dev@example.com>
+    
+    ---------
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ .github/workflows/desktop-release.yml | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+commit a287b4489c0ba1246f562b32b348cb7a33b9affb
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 16:02:05 2026 +0100
+
+    feat(playground): + menu with attach and web search, sources tucked under Show (#1174) (#1494)
+    
+    The paperclip becomes a + that opens Attach files and a Search the web switch
+    (the settings rail keeps its switch too). While web search is on the + turns
+    blue with a small dot instead of a chip in the input. A searched reply's
+    sources now live in the reply's Show/Hide section, closed by default, and
+    every Show/Hide in the Playground opens and closes with a smooth height
+    animation.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ .../components/playground/liquid-composer.test.tsx | 74 +++++++++++++++++++
+ .../src/components/playground/liquid-composer.tsx  | 85 ++++++++++++++-------
+ client/src/i18n/locales/am.json                    |  4 +-
+ client/src/i18n/locales/ar.json                    |  4 +-
+ client/src/i18n/locales/az.json                    |  4 +-
+ client/src/i18n/locales/bg.json                    |  4 +-
+ client/src/i18n/locales/bn.json                    |  4 +-
+ client/src/i18n/locales/cs.json                    |  4 +-
+ client/src/i18n/locales/da.json                    |  4 +-
+ client/src/i18n/locales/de.json                    |  4 +-
+ client/src/i18n/locales/el.json                    |  4 +-
+ client/src/i18n/locales/en.json                    |  4 +-
+ client/src/i18n/locales/es.json                    |  4 +-
+ client/src/i18n/locales/fa.json                    |  4 +-
+ client/src/i18n/locales/fi.json                    |  4 +-
+ client/src/i18n/locales/fr.json                    |  4 +-
+ client/src/i18n/locales/gu.json                    |  4 +-
+ client/src/i18n/locales/ha.json                    |  4 +-
+ client/src/i18n/locales/he.json                    |  4 +-
+ client/src/i18n/locales/hi.json                    |  4 +-
+ client/src/i18n/locales/hr.json                    |  4 +-
+ client/src/i18n/locales/hu.json                    |  4 +-
+ client/src/i18n/locales/id.json                    |  4 +-
+ client/src/i18n/locales/ig.json                    |  4 +-
+ client/src/i18n/locales/it.json                    |  4 +-
+ client/src/i18n/locales/ja.json                    |  4 +-
+ client/src/i18n/locales/ka.json                    |  4 +-
+ client/src/i18n/locales/km.json                    |  4 +-
+ client/src/i18n/locales/kn.json                    |  4 +-
+ client/src/i18n/locales/ko.json                    |  4 +-
+ client/src/i18n/locales/lt.json                    |  4 +-
+ client/src/i18n/locales/ml.json                    |  4 +-
+ client/src/i18n/locales/mr.json                    |  4 +-
+ client/src/i18n/locales/ms.json                    |  4 +-
+ client/src/i18n/locales/my.json                    |  4 +-
+ client/src/i18n/locales/ne.json                    |  4 +-
+ client/src/i18n/locales/nl.json                    |  4 +-
+ client/src/i18n/locales/no.json                    |  4 +-
+ client/src/i18n/locales/or.json                    |  4 +-
+ client/src/i18n/locales/pa.json                    |  4 +-
+ client/src/i18n/locales/pl.json                    |  4 +-
+ client/src/i18n/locales/pt-BR.json                 |  4 +-
+ client/src/i18n/locales/pt-PT.json                 |  4 +-
+ client/src/i18n/locales/ro.json                    |  4 +-
+ client/src/i18n/locales/ru.json                    |  4 +-
+ client/src/i18n/locales/si.json                    |  4 +-
+ client/src/i18n/locales/sk.json                    |  4 +-
+ client/src/i18n/locales/sr.json                    |  4 +-
+ client/src/i18n/locales/sv.json                    |  4 +-
+ client/src/i18n/locales/sw.json                    |  4 +-
+ client/src/i18n/locales/ta.json                    |  4 +-
+ client/src/i18n/locales/te.json                    |  4 +-
+ client/src/i18n/locales/th.json                    |  4 +-
+ client/src/i18n/locales/tl.json                    |  4 +-
+ client/src/i18n/locales/tr.json                    |  4 +-
+ client/src/i18n/locales/uk.json                    |  4 +-
+ client/src/i18n/locales/ur.json                    |  4 +-
+ client/src/i18n/locales/uz.json                    |  4 +-
+ client/src/i18n/locales/vi.json                    |  4 +-
+ client/src/i18n/locales/yo.json                    |  4 +-
+ client/src/i18n/locales/zh-CN.json                 |  4 +-
+ client/src/i18n/locales/zh-TW.json                 |  4 +-
+ client/src/pages/PlaygroundPage.tsx                | 86 ++++++++++++++++------
+ 63 files changed, 315 insertions(+), 170 deletions(-)
+
+commit 1e73aca740802a679e88a8be9b1c90e5635a6e1a
+Author: dev3 <dev@example.com>
+Date:   Tue Oct 13 15:22:54 2026 +0100
+
+    chore(release): prepare v0.14.0 (#1491)
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ desktop/package-lock.json | 4 ++--
+ desktop/package.json      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit a2b78cef3fd58199f246ecfe28b80c5dd93dfba8
+Author: dev5 <dev@example.com>
+Date:   Tue Oct 13 22:13:08 2026 +0800
+
+    feat(search): web search engines from the catalog, agent web search and dashboard (#1458)
+    
+    Closes #1174. Builds on @suantea's /v1/search slice: catalog-managed search engines (Tavily, Exa, Firecrawl, Linkup), Claude Code / Codex / MCP web search served from the search pool, and the dashboard (Models → Search, Keys, Playground, Analytics, Agents).
+    
+    Co-authored-by: dev6 <dev@example.com>
+    Co-Authored-By: dev2 <dev@example.com>
+
+ client/src/App.tsx                                 |   3 +
+ client/src/components/command-palette.tsx          |   2 +
+ client/src/components/keys/add-key-form.tsx        |  14 +-
+ .../components/keys/provider-list-search.test.tsx  |  76 +++
+ client/src/components/keys/provider-list.tsx       |  39 +-
+ client/src/components/model-combobox.tsx           |  70 ++-
+ client/src/components/models-tabs.tsx              |   1 +
+ .../src/components/playground/liquid-composer.tsx  |  19 +-
+ .../src/components/playground/search-sources.tsx   |  38 ++
+ client/src/components/playground/settings-rail.tsx |  39 +-
+ client/src/components/search-engines.test.tsx      |  85 +++
+ client/src/components/search-engines.tsx           | 184 ++++++
+ client/src/i18n/locales/am.json                    |  39 +-
+ client/src/i18n/locales/ar.json                    |  39 +-
+ client/src/i18n/locales/az.json                    |  39 +-
+ client/src/i18n/locales/bg.json                    |  39 +-
+ client/src/i18n/locales/bn.json                    |  39 +-
+ client/src/i18n/locales/cs.json                    |  39 +-
+ client/src/i18n/locales/da.json                    |  39 +-
+ client/src/i18n/locales/de.json                    |  39 +-
+ client/src/i18n/locales/el.json                    |  39 +-
+ client/src/i18n/locales/en.json                    |  37 ++
+ client/src/i18n/locales/es.json                    |  39 +-
+ client/src/i18n/locales/fa.json                    |  39 +-
+ client/src/i18n/locales/fi.json                    |  39 +-
+ client/src/i18n/locales/fr.json                    |  39 +-
+ client/src/i18n/locales/gu.json                    |  39 +-
+ client/src/i18n/locales/ha.json                    |  39 +-
+ client/src/i18n/locales/he.json                    |  39 +-
+ client/src/i18n/locales/hi.json                    |  39 +-
+ client/src/i18n/locales/hr.json                    |  39 +-
+ client/src/i18n/locales/hu.json                    |  39 +-
+ client/src/i18n/locales/id.json                    |  39 +-
+ client/src/i18n/locales/ig.json                    |  39 +-
+ client/src/i18n/locales/it.json                    |  39 +-
+ client/src/i18n/locales/ja.json                    |  39 +-
+ client/src/i18n/locales/ka.json                    |  39 +-
+ client/src/i18n/locales/km.json                    |  39 +-
+ client/src/i18n/locales/kn.json                    |  39 +-
+ client/src/i18n/locales/ko.json                    |  39 +-
+ client/src/i18n/locales/lt.json                    |  39 +-
+ client/src/i18n/locales/ml.json                    |  39 +-
+ client/src/i18n/locales/mr.json                    |  39 +-
+ client/src/i18n/locales/ms.json                    |  39 +-
+ client/src/i18n/locales/my.json                    |  39 +-
+ client/src/i18n/locales/ne.json                    |  39 +-
+ client/src/i18n/locales/nl.json                    |  39 +-
+ client/src/i18n/locales/no.json                    |  39 +-
+ client/src/i18n/locales/or.json                    |  39 +-
+ client/src/i18n/locales/pa.json                    |  39 +-
+ client/src/i18n/locales/pl.json                    |  39 +-
+ client/src/i18n/locales/pt-BR.json                 |  39 +-
+ client/src/i18n/locales/pt-PT.json                 |  39 +-
+ client/src/i18n/locales/ro.json                    |  39 +-
+ client/src/i18n/locales/ru.json                    |  39 +-
+ client/src/i18n/locales/si.json                    |  39 +-
+ client/src/i18n/locales/sk.json                    |  39 +-
+ client/src/i18n/locales/sr.json                    |  39 +-
+ client/src/i18n/locales/sv.json                    |  39 +-
+ client/src/i18n/locales/sw.json                    |  39 +-
+ client/src/i18n/locales/ta.json                    |  39 +-
+ client/src/i18n/locales/te.json                    |  39 +-
+ client/src/i18n/locales/th.json                    |  39 +-
+ client/src/i18n/locales/tl.json                    |  39 +-
+ client/src/i18n/locales/tr.json                    |  39 +-
+ client/src/i18n/locales/uk.json                    |  39 +-
+ client/src/i18n/locales/ur.json                    |  39 +-
+ client/src/i18n/locales/uz.json                    |  39 +-
+ client/src/i18n/locales/vi.json                    |  39 +-
+ client/src/i18n/locales/yo.json                    |  39 +-
+ client/src/i18n/locales/zh-CN.json                 |  39 +-
+ client/src/i18n/locales/zh-TW.json                 |  39 +-
+ client/src/lib/playground-conversations.ts         |   9 +
+ client/src/lib/routing.ts                          |   5 +
+ client/src/lib/search.test.ts                      |  91 +++
+ client/src/lib/search.ts                           | 127 +++++
+ client/src/pages/AgentsPage.tsx                    |  18 +-
+ client/src/pages/AnalyticsPage.tsx                 |  54 ++
+ client/src/pages/PlaygroundPage.tsx                |  72 ++-
+ client/src/pages/SearchPage.tsx                    |   5 +
+ server/src/__tests__/db/migrate/roundtrip.test.ts  |   2 +
+ server/src/__tests__/helpers/search-engines.ts     |  19 +
+ server/src/__tests__/lib/module-purity.test.ts     |   2 +
+ .../__tests__/providers/search-providers.test.ts   |  63 +++
+ .../src/__tests__/routes/agent-web-search.test.ts  | 351 ++++++++++++
+ server/src/__tests__/routes/conversations.test.ts  |   1 +
+ server/src/__tests__/routes/mcp.test.ts            |   1 +
+ server/src/__tests__/routes/search.test.ts         | 149 +++++
+ server/src/__tests__/services/catalog-sync.test.ts |  98 ++++
+ server/src/__tests__/services/search.test.ts       | 252 +++++++++
+ server/src/app.ts                                  |   2 +
+ server/src/db/migrate/defaults.ts                  |   3 +
+ .../migrations/20261013_000001_search_engines.ts   |  44 ++
+ server/src/docs/openapi.ts                         | 101 ++++
+ server/src/lib/anthropic-web-search.ts             | 315 +++++++++++
+ server/src/lib/key-parser.ts                       |   8 +
+ server/src/lib/proxy.ts                            |   2 +-
+ server/src/lib/responses-web-search.ts             | 305 ++++++++++
+ server/src/lib/search-platforms.ts                 |  13 +
+ server/src/lib/web-search-tool.ts                  | 266 +++++++++
+ server/src/providers/exa.ts                        |  23 +
+ server/src/providers/firecrawl.ts                  |  19 +
+ server/src/providers/index.ts                      |  11 +
+ server/src/providers/linkup.ts                     |  19 +
+ server/src/providers/search-only.ts                |  48 ++
+ server/src/providers/tavily.ts                     |  19 +
+ server/src/routes/analytics.ts                     |  11 +
+ server/src/routes/anthropic.ts                     |  18 +-
+ server/src/routes/conversations.ts                 |   7 +
+ server/src/routes/keys.ts                          |  12 +-
+ server/src/routes/mcp.ts                           |  36 +-
+ server/src/routes/media.ts                         |   5 +-
+ server/src/routes/proxy.ts                         |  72 +++
+ server/src/routes/responses.ts                     |  41 +-
+ server/src/routes/search.ts                        |  39 ++
+ server/src/services/catalog-sync.ts                |  95 ++++
+ server/src/services/custom-media-register.ts       |   4 +-
+ server/src/services/media.ts                       |   6 +-
+ server/src/services/search.ts                      | 627 +++++++++++++++++++++
+ shared/types.ts                                    |  19 +
+ 120 files changed, 6303 insertions(+), 114 deletions(-)
+
+commit 986b2118226f5c2d1a0348e14d151a7005c1924e
+Author: dev3 <dev@example.com>
+Date:   Mon Oct 12 14:33:12 2026 +0100
+
+    fix(auth): sign in after a password reset and log the account email (#1477) (#1486)
+    
+    FreeLLMAPI has one account, and the password reset never said which
+    email it belongs to. Login needs that email, so an operator who also
+    forgot it could reset the password and still be locked out.
+    
+    - /reset-password creates a session and returns { token, email }, and the
+      dashboard uses it to open straight away instead of sending the user
+      back to the login form. The reset code already proves they control the
+      install, the same trust /setup relies on.
+    - The forgot-password log line names the account email beside the code,
+      for anyone working from the logs.
+    
+    Co-authored-by: dev2 <dev@example.com>
+
+ .../components/auth-gate.reset-signs-in.test.tsx   | 124 +++++++++++++++++++++
+ client/src/components/auth-gate.tsx                |  13 ++-
+ .../__tests__/routes/auth-reset-password.test.ts   |  44 ++++++++
+ server/src/lib/reset-code.ts                       |   8 +-
+ server/src/routes/auth.ts                          |  13 ++-
+ server/src/services/auth.ts                        |  16 ++-
+ 6 files changed, 204 insertions(+), 14 deletions(-)

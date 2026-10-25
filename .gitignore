@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# 原始运行记录：里面有本机路径、会话号、日志片段，不公开
+bench/results/*
+!bench/results/pelican/
+bench/results/pelican/*
+!bench/results/pelican/*.png
+!bench/results/pelican/*.svg
+bench/corpus/
+
+# 私人调研材料
+research/raw/
+research/videos/
+TODO.md
+NOTES.md
+
+# macOS 附带的元数据文件
+._*
+.DS_Store

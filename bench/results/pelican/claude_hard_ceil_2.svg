@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<!-- iu-pelican-v3 -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD166"/>
+      <stop offset="100%" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#skyGradient)"/>
+
+  <!-- Sun -->
+  <g>
+    <line x1="145" y1="90" x2="170" y2="90" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="131.8" y1="121.8" x2="149.5" y2="139.5" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="100" y1="135" x2="100" y2="160" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="68.2" y1="121.8" x2="50.5" y2="139.5" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="55" y1="90" x2="30" y2="90" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="68.2" y1="58.2" x2="50.5" y2="40.5" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="100" y1="45" x2="100" y2="20" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <line x1="131.8" y1="58.2" x2="149.5" y2="40.5" stroke="#FB8500" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="100" cy="90" r="45" fill="#FFB703"/>
+  </g>
+
+  <!-- Cloud -->
+  <g opacity="0.8" fill="#F1FAEE">
+    <ellipse cx="600" cy="110" rx="45" ry="22"/>
+    <ellipse cx="630" cy="100" rx="35" ry="18"/>
+    <ellipse cx="570" cy="100" rx="30" ry="16"/>
+  </g>
+
+  <!-- Birds -->
+  <g fill="none" stroke="#2B2D42" stroke-width="2" stroke-linecap="round">
+    <path d="M190,70 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M250,130 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M330,60 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M490,80 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M550,150 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M670,70 q10,-10 20,0 q10,10 20,0"/>
+    <path d="M710,140 q10,-10 20,0 q10,10 20,0"/>
+  </g>
+
+  <!-- Ground -->
+  <line x1="0" y1="520" x2="800" y2="520" stroke="#2B2D42" stroke-width="3" stroke-dasharray="12 8"/>
+
+  <!-- Sign -->
+  <g>
+    <line x1="650" y1="520" x2="650" y2="430" stroke="#5C677D" stroke-width="6"/>
+    <rect x="600" y="400" width="100" height="40" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <text x="650" y="426" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#2B2D42">IU-46</text>
+    <!-- Ladybug on top of sign -->
+    <g>
+      <ellipse cx="650" cy="396" rx="9" ry="7" fill="#D7263D"/>
+      <line x1="650" y1="390" x2="650" y2="402" stroke="#2B2D42" stroke-width="1"/>
+      <circle cx="643" cy="392" r="1.5" fill="#2B2D42"/>
+      <circle cx="657" cy="392" r="1.5" fill="#2B2D42"/>
+      <circle cx="647" cy="400" r="1.2" fill="#2B2D42"/>
+      <circle cx="653" cy="394" r="1.2" fill="#2B2D42"/>
+      <circle cx="656" cy="390" r="2" fill="#2B2D42"/>
+    </g>
+  </g>
+
+  <!-- Bicycle -->
+  <g>
+    <!-- Frame -->
+    <g stroke="#8338EC" stroke-width="6" stroke-linecap="round" fill="none">
+      <line x1="330" y1="470" x2="390" y2="460"/>
+      <line x1="390" y1="460" x2="480" y2="470"/>
+      <line x1="390" y1="460" x2="340" y2="390"/>
+      <line x1="340" y1="390" x2="470" y2="380"/>
+      <line x1="390" y1="460" x2="470" y2="380"/>
+      <line x1="470" y1="380" x2="480" y2="470"/>
+      <line x1="340" y1="390" x2="330" y2="470"/>
+    </g>
+
+    <!-- Rear wheel -->
+    <g>
+      <circle cx="330" cy="470" r="50" fill="none" stroke="#2B2D42" stroke-width="4"/>
+      <g stroke="#5C677D" stroke-width="2">
+        <line x1="330" y1="470" x2="380" y2="470"/>
+        <line x1="330" y1="470" x2="355" y2="513.3"/>
+        <line x1="330" y1="470" x2="305" y2="513.3"/>
+        <line x1="330" y1="470" x2="280" y2="470"/>
+        <line x1="330" y1="470" x2="305" y2="426.7"/>
+        <line x1="330" y1="470" x2="355" y2="426.7"/>
+      </g>
+    </g>
+
+    <!-- Front wheel -->
+    <g>
+      <circle cx="480" cy="470" r="50" fill="none" stroke="#2B2D42" stroke-width="4"/>
+      <g stroke="#5C677D" stroke-width="2">
+        <line x1="480" y1="470" x2="530" y2="470"/>
+        <line x1="480" y1="470" x2="505" y2="513.3"/>
+        <line x1="480" y1="470" x2="455" y2="513.3"/>
+        <line x1="480" y1="470" x2="430" y2="470"/>
+        <line x1="480" y1="470" x2="455" y2="426.7"/>
+        <line x1="480" y1="470" x2="505" y2="426.7"/>
+      </g>
+    </g>
+
+    <!-- Pedal crank -->
+    <circle cx="390" cy="460" r="8" fill="#2B2D42"/>
+    <line x1="390" y1="460" x2="410" y2="475" stroke="#2B2D42" stroke-width="4"/>
+    <line x1="390" y1="460" x2="370" y2="445" stroke="#2B2D42" stroke-width="4"/>
+
+    <!-- Handlebar grips -->
+    <line x1="455" y1="378" x2="490" y2="372" stroke="#2B2D42" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Basket -->
+    <g>
+      <path d="M495,370 L525,370 L520,395 L500,395 Z" fill="none" stroke="#5C677D" stroke-width="3"/>
+      <ellipse cx="510" cy="383" rx="12" ry="7" fill="#00B4D8"/>
+      <path d="M498,383 L492,378 L492,388 Z" fill="#00B4D8"/>
+    </g>
+  </g>
+
+  <!-- Pelican -->
+  <g>
+    <!-- Legs -->
+    <line x1="345" y1="360" x2="390" y2="455" stroke="#2B2D42" stroke-width="4"/>
+    <line x1="355" y1="360" x2="410" y2="470" stroke="#2B2D42" stroke-width="4"/>
+
+    <!-- Arm to handlebar -->
+    <path d="M375,330 Q430,340 465,375" fill="none" stroke="#E0E1DD" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Body -->
+    <ellipse cx="345" cy="330" rx="55" ry="42" fill="#E0E1DD" stroke="#2B2D42" stroke-width="3"/>
+
+    <!-- Neck -->
+    <path d="M385,310 Q415,300 425,295" fill="none" stroke="#E0E1DD" stroke-width="26" stroke-linecap="round"/>
+    <path d="M385,310 Q415,300 425,295" fill="none" stroke="#2B2D42" stroke-width="3"/>
+
+    <!-- Scarf -->
+    <path d="M400,302 Q415,318 430,308" fill="none" stroke="#F95738" stroke-width="10" stroke-linecap="round"/>
+    <path d="M408,312 L402,330 L414,324 Z" fill="#F95738"/>
+
+    <!-- Head -->
+    <circle cx="432" cy="295" r="24" fill="#E0E1DD" stroke="#2B2D42" stroke-width="3"/>
+
+    <!-- Beak -->
+    <path d="M454,290 L500,300 L454,308 Q464,299 454,290 Z" fill="#F4A261" stroke="#2B2D42" stroke-width="2"/>
+
+    <!-- Eye -->
+    <circle cx="440" cy="290" r="4" fill="#0B132B"/>
+  </g>
+</svg>

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-labelledby="title desc">
+  <title id="title">Pelican riding a bicycle</title>
+  <desc id="desc">A cheerful white pelican with an orange bill and pouch pedals a teal bicycle along a sunny path.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1">
+      <stop stop-color="#d9f4fb"/>
+      <stop offset="1" stop-color="#f7fcf3"/>
+    </linearGradient>
+    <linearGradient id="feathers" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fffef4"/>
+      <stop offset="1" stop-color="#dce9e5"/>
+    </linearGradient>
+    <linearGradient id="bill" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffd476"/>
+      <stop offset=".55" stop-color="#f6a946"/>
+      <stop offset="1" stop-color="#db7835"/>
+    </linearGradient>
+    <linearGradient id="pouch" x1="0" y1="0" x2=".3" y2="1">
+      <stop stop-color="#ffdca0"/>
+      <stop offset="1" stop-color="#ee8a62"/>
+    </linearGradient>
+    <pattern id="spokes" width="1" height="1" patternUnits="userSpaceOnUse"/>
+  </defs>
+
+  <!-- A quiet, open backdrop keeps the bicycle silhouette easy to read. -->
+  <rect width="1000" height="700" fill="url(#sky)"/>
+  <circle cx="825" cy="105" r="54" fill="#ffe7a2" opacity=".85"/>
+  <g fill="#fff" opacity=".72">
+    <ellipse cx="180" cy="113" rx="75" ry="20"/>
+    <ellipse cx="140" cy="105" rx="34" ry="25"/>
+    <ellipse cx="219" cy="106" rx="42" ry="27"/>
+    <ellipse cx="463" cy="83" rx="57" ry="15"/>
+    <ellipse cx="436" cy="75" rx="27" ry="20"/>
+    <ellipse cx="493" cy="76" rx="32" ry="21"/>
+  </g>
+  <path d="M0 581 Q250 551 500 584 T1000 573 V700 H0Z" fill="#cde7c1"/>
+  <path d="M0 622 Q500 594 1000 621 V700 H0Z" fill="#e9d7ae"/>
+  <path d="M0 646 Q500 619 1000 646" fill="none" stroke="#d9bf8f" stroke-width="4" opacity=".7"/>
+  <ellipse cx="500" cy="638" rx="405" ry="19" fill="#8fa88c" opacity=".25"/>
+
+  <!-- Wheels and spokes. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g stroke="#334753">
+      <circle cx="265" cy="506" r="124" stroke-width="15"/>
+      <circle cx="747" cy="506" r="124" stroke-width="15"/>
+    </g>
+    <g stroke="#f6f9ec" stroke-width="3">
+      <circle cx="265" cy="506" r="111"/>
+      <circle cx="747" cy="506" r="111"/>
+    </g>
+    <g stroke="#79939c" stroke-width="2" opacity=".9">
+      <path d="M265 395v222M154 506h222M186 427l158 158M186 585l158-158M222 403l86 206M222 609l86-206M162 463l206 86M162 549l206-86"/>
+      <path d="M747 395v222M636 506h222M668 427l158 158M668 585l158-158M704 403l86 206M704 609l86-206M644 463l206 86M644 549l206-86"/>
+    </g>
+    <g fill="#d7e9e5" stroke="#334753" stroke-width="5">
+      <circle cx="265" cy="506" r="14"/>
+      <circle cx="747" cy="506" r="14"/>
+    </g>
+  </g>
+
+  <!-- Teal frame, fork, saddle, and handlebars. -->
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M265 506 414 360 486 525 265 506M414 360 646 359 486 525 414 360M646 359 747 506" stroke="#236a70" stroke-width="18"/>
+    <path d="M265 506 414 360 486 525 265 506M414 360 646 359 486 525 414 360M646 359 747 506" stroke="#48a4a1" stroke-width="10"/>
+    <path d="M646 359 675 309 704 309" stroke="#314c58" stroke-width="13"/>
+    <path d="M698 309h51q18 0 18 16v15" stroke="#314c58" stroke-width="12"/>
+    <path d="M411 357 395 315" stroke="#314c58" stroke-width="12"/>
+    <path d="M358 313q45-12 89 1" stroke="#314c58" stroke-width="15"/>
+    <path d="M365 307q39-10 75 1" stroke="#6f4d3e" stroke-width="7"/>
+  </g>
+  <path d="M373 480q112 29 198-13" fill="none" stroke="#365a60" stroke-width="4" opacity=".45"/>
+
+  <!-- Tail feathers sit behind the body. -->
+  <g fill="#e7eeea" stroke="#728c89" stroke-width="3" stroke-linejoin="round">
+    <path d="M319 266q-84-30-115-11 32 28 114 49z"/>
+    <path d="M328 276q-92-12-127 9 43 23 131 20z"/>
+    <path d="M332 291q-80 7-112 34 55 8 123-11z"/>
+  </g>
+
+  <!-- The bird's rounded body and long curved neck. -->
+  <path d="M330 252q78-67 173-20 46 22 68 77 34-31 53-82 19-55 3-78-16-24-7-44 7-21 29-23 29-4 43 22 22 40 9 89-13 63-57 129-35 52-110 61-115 14-190-35-72-47-66-105 4-39 52-65z" fill="url(#feathers)" stroke="#718e8d" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M588 281q66-77 69-144" fill="none" stroke="#fff" stroke-width="18" opacity=".68" stroke-linecap="round"/>
+  <path d="M332 254q28-21 65-28" fill="none" stroke="#fff" stroke-width="12" opacity=".8" stroke-linecap="round"/>
+
+  <!-- Folded wing, including a few distinct feather tips. -->
+  <path d="M356 275q62-27 121 14 35 24 46 64-45 25-105 1-46-18-62-79z" fill="#e9f0eb" stroke="#8da8a1" stroke-width="4"/>
+  <path d="M378 306q35 32 82 29M399 286q34 40 83 44M429 283q27 30 62 34" fill="none" stroke="#b5c7bd" stroke-width="4" stroke-linecap="round"/>
+  <path d="M501 319q66-4 105-33 27-19 60-16 28 2 48 18l-8 25q-38-19-68-2-56 39-113 39" fill="url(#feathers)" stroke="#78928d" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M684 292q14 16 22 31M697 288q14 11 23 28" fill="none" stroke="#93aaa0" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Face: crest, eye, long upper bill, and hanging throat pouch. -->
+  <path d="M637 100q-19-31-10-53 13 17 24 21 6-25 27-36-4 23-9 38 23-12 43-7-22 16-31 35" fill="#f8faf0" stroke="#78918c" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M669 144q56 6 102 11 84 10 145 51 14 10 10 18-3 7-17 4-101-18-175-33-42-8-74-26z" fill="url(#bill)" stroke="#9b6742" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M669 169q58 22 126 35 61 12 113 19-25 22-72 54-52 35-105 25-49-9-69-69-9-29-2-58z" fill="url(#pouch)" stroke="#b16d54" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M684 191q43 67 103 75 48 6 95-27" fill="none" stroke="#efad82" stroke-width="5" opacity=".8"/>
+  <path d="M694 169q110 19 212 52" fill="none" stroke="#ffe2a0" stroke-width="5" stroke-linecap="round"/>
+  <path d="M906 220q12 3 19 2" fill="none" stroke="#a36648" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="663" cy="131" r="13" fill="#f8f8ed"/>
+  <circle cx="667" cy="131" r="7" fill="#203844"/>
+  <circle cx="670" cy="128" r="2.5" fill="#fff"/>
+  <path d="M639 113q16-11 34-5" fill="none" stroke="#718b87" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Orange legs reach opposite pedals; webbed feet make the rider unmistakable. -->
+  <g fill="none" stroke="#c98a4b" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M456 365q-20 52-9 91l42 42"/>
+    <path d="M511 366q28 57 9 93l-58 87"/>
+  </g>
+  <g fill="#f6b568" stroke="#b77848" stroke-width="4" stroke-linejoin="round">
+    <path d="M483 489q18-3 32 6l20 16q-18 4-31-2l-8 12-9-14-15 7 7-17z"/>
+    <path d="M458 537q19 0 32 13l13 19q-21-2-32-12l-12 8-5-16-15 2 12-13z"/>
+  </g>
+
+  <!-- Crank and pedals in front of the feet. -->
+  <g fill="none" stroke="#304b55" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="486" cy="525" r="21" fill="#e2e6d3" stroke-width="7"/>
+    <path d="M486 525 512 507M486 525 459 549" stroke-width="9"/>
+    <path d="M495 509h43M438 551h43" stroke-width="10"/>
+  </g>
+
+  <!-- Small motion marks and roadside flowers. -->
+  <g fill="none" stroke="#6daaa2" stroke-width="5" stroke-linecap="round" opacity=".7">
+    <path d="M88 438h63M105 461h38M852 434h52"/>
+  </g>
+  <g stroke="#6e9d65" stroke-width="3" stroke-linecap="round">
+    <path d="M82 623v-23M112 623v-31M900 625v-28M938 625v-20"/>
+  </g>
+  <g fill="#fff4ba" stroke="#e6a773" stroke-width="2">
+    <circle cx="82" cy="597" r="7"/><circle cx="112" cy="589" r="7"/>
+    <circle cx="900" cy="594" r="7"/><circle cx="938" cy="602" r="7"/>
+  </g>
+</svg>

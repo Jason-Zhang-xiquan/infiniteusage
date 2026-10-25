@@ -1,0 +1,22 @@
+{
+ "id": "ask_index_kilo",
+ "kind": "ask",
+ "command": "",
+ "exit": 0,
+ "goal": "",
+ "question": "What is the documented anonymous rate limit of the Kilo gateway, what is its platform id, and on which line is that platform declared?",
+ "files": [
+  "server/src/providers/index.ts"
+ ],
+ "required": [
+  [
+   "200"
+  ],
+  [
+   "kilo"
+  ]
+ ],
+ "locations": [
+  "index.ts:276"
+ ]
+}

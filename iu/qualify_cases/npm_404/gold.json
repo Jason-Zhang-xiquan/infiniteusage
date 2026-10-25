@@ -1,0 +1,18 @@
+{
+ "id": "npm_404",
+ "kind": "sum",
+ "command": "npm install iu-definitely-not-real-pkg-zz9 --no-audit --no-fund --loglevel verbose",
+ "exit": 1,
+ "goal": "",
+ "question": "",
+ "files": [],
+ "required": [
+  [
+   "404"
+  ],
+  [
+   "iu-definitely-not-real-pkg-zz9"
+  ]
+ ],
+ "locations": []
+}

@@ -1,0 +1,77 @@
+[worker] processed batch 0 ok, 128 items
+[worker] processed batch 1 ok, 128 items
+[worker] processed batch 2 ok, 128 items
+[worker] processed batch 3 ok, 128 items
+[worker] processed batch 4 ok, 128 items
+[worker] processed batch 5 ok, 128 items
+[worker] processed batch 6 ok, 128 items
+[worker] processed batch 7 ok, 128 items
+[worker] processed batch 8 ok, 128 items
+[worker] processed batch 9 ok, 128 items
+[worker] processed batch 10 ok, 128 items
+[worker] processed batch 11 ok, 128 items
+[worker] processed batch 12 ok, 128 items
+[worker] processed batch 13 ok, 128 items
+[worker] processed batch 14 ok, 128 items
+[worker] processed batch 15 ok, 128 items
+[worker] processed batch 16 ok, 128 items
+[worker] processed batch 17 ok, 128 items
+[worker] processed batch 18 ok, 128 items
+[worker] processed batch 19 ok, 128 items
+[worker] processed batch 20 ok, 128 items
+[worker] processed batch 21 ok, 128 items
+[worker] processed batch 22 ok, 128 items
+[worker] processed batch 23 ok, 128 items
+[worker] processed batch 24 ok, 128 items
+[worker] processed batch 25 ok, 128 items
+[worker] processed batch 26 ok, 128 items
+[worker] processed batch 27 ok, 128 items
+[worker] processed batch 28 ok, 128 items
+[worker] processed batch 29 ok, 128 items
+[worker] processed batch 30 ok, 128 items
+[worker] processed batch 31 ok, 128 items
+[worker] processed batch 32 ok, 128 items
+[worker] processed batch 33 ok, 128 items
+[worker] processed batch 34 ok, 128 items
+[worker] processed batch 35 ok, 128 items
+[worker] processed batch 36 ok, 128 items
+[worker] processed batch 37 ok, 128 items
+[worker] processed batch 38 ok, 128 items
+[worker] processed batch 39 ok, 128 items
+[worker] processed batch 40 ok, 128 items
+[worker] processed batch 41 ok, 128 items
+[worker] processed batch 42 ok, 128 items
+[worker] processed batch 43 ok, 128 items
+[worker] processed batch 44 ok, 128 items
+[worker] processed batch 45 ok, 128 items
+[worker] processed batch 46 ok, 128 items
+[worker] processed batch 47 ok, 128 items
+[worker] processed batch 48 ok, 128 items
+[worker] processed batch 49 ok, 128 items
+[worker] processed batch 50 ok, 128 items
+[worker] processed batch 51 ok, 128 items
+[worker] processed batch 52 ok, 128 items
+[worker] processed batch 53 ok, 128 items
+[worker] processed batch 54 ok, 128 items
+[worker] processed batch 55 ok, 128 items
+[worker] processed batch 56 ok, 128 items
+[worker] processed batch 57 ok, 128 items
+[worker] processed batch 58 ok, 128 items
+[worker] processed batch 59 ok, 128 items
+/private/tmp/iu_crash.js:2
+function parseConfig(cfg) { return cfg.limits.perMinute; }
+                                              ^
+
+TypeError: Cannot read properties of undefined (reading 'perMinute')
+    at parseConfig (/private/tmp/iu_crash.js:2:47)
+    at startServer (/private/tmp/iu_crash.js:3:60)
+    at Object.<anonymous> (/private/tmp/iu_crash.js:4:1)
+    at Module._compile (node:internal/modules/cjs/loader:1781:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1913:10)
+    at Module.load (node:internal/modules/cjs/loader:1505:32)
+    at Module._load (node:internal/modules/cjs/loader:1309:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49
+
+Node.js v22.23.3

@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+<!-- iu-pelican-v3 -->
+  <title id="title">Pelican riding a bicycle</title>
+  <desc id="desc">A scarf-wearing pelican cycles along a road with a fish in the front basket, beneath a sunny sky with seven birds.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD166"/>
+      <stop offset="1" stop-color="#06D6A0"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E5E2CB"/>
+      <stop offset="1" stop-color="#CAC8BB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <g id="sun">
+    <g fill="none" stroke="#FB8500" stroke-width="5" stroke-linecap="round">
+      <line x1="88" y1="13" x2="88" y2="30"/>
+      <line x1="137" y1="33" x2="125" y2="45"/>
+      <line x1="157" y1="82" x2="140" y2="82"/>
+      <line x1="137" y1="131" x2="125" y2="119"/>
+      <line x1="88" y1="151" x2="88" y2="134"/>
+      <line x1="39" y1="131" x2="51" y2="119"/>
+      <line x1="19" y1="82" x2="36" y2="82"/>
+      <line x1="39" y1="33" x2="51" y2="45"/>
+    </g>
+    <circle cx="88" cy="82" r="42" fill="#FFB703"/>
+  </g>
+
+  <path id="cloud" d="M333 119c-8-21 7-43 29-43 10 0 20 5 26 13 7-16 24-27 43-27 25 0 46 18 49 41 17-2 32 10 32 27 0 17-13 29-30 29H355c-17 0-29-13-29-28 0-5 2-9 7-12Z" fill="#F1FAEE" opacity="0.8"/>
+
+  <g id="birds" fill="none" stroke="#2B2D42" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M214 123q10-9 20 0q10-9 20 0"/>
+    <path d="M260 154q9-8 18 0q9-8 18 0"/>
+    <path d="M561 89q11-10 22 0q11-10 22 0"/>
+    <path d="M615 126q8-7 16 0q8-7 16 0"/>
+    <path d="M673 77q10-9 20 0q10-9 20 0"/>
+    <path d="M700 161q8-7 16 0q8-7 16 0"/>
+    <path d="M174 192q9-8 18 0q9-8 18 0"/>
+  </g>
+
+  <path d="M0 488Q140 457 286 488T565 485T800 474V600H0Z" fill="#8FCB9B"/>
+  <path d="M0 532H800V600H0Z" fill="url(#road)"/>
+  <path d="M0 535H800" fill="none" stroke="#5E7463" stroke-width="4" stroke-dasharray="12 8"/>
+  <path d="M24 570h78m558 0h115" fill="none" stroke="#FFF8D6" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+
+  <g id="roadside-sign">
+    <path d="M718 345v187" stroke="#624B39" stroke-width="11" stroke-linecap="round"/>
+    <rect x="666" y="304" width="107" height="57" rx="9" fill="#FFF3CF" stroke="#624B39" stroke-width="5"/>
+    <text x="719.5" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#283843">IU-46</text>
+    <g id="ladybug">
+      <circle cx="718" cy="300" r="7" fill="#D7263D" stroke="#1C2733" stroke-width="1.5"/>
+      <circle cx="717" cy="291.5" r="3" fill="#1C2733"/>
+      <path d="M718 294v12" stroke="#1C2733" stroke-width="1"/>
+      <circle cx="714.5" cy="299" r="1" fill="#1C2733"/>
+      <circle cx="721.5" cy="301" r="1" fill="#1C2733"/>
+    </g>
+  </g>
+
+  <g id="bicycle">
+    <g id="rear-wheel">
+      <circle cx="215" cy="459" r="71" fill="#F3F4E7" fill-opacity="0.38" stroke="#263845" stroke-width="11"/>
+      <circle cx="215" cy="459" r="62" fill="none" stroke="#ADB5AF" stroke-width="2"/>
+      <g stroke="#5C677D" stroke-width="2.5">
+        <line x1="215" y1="459" x2="276" y2="459"/>
+        <line x1="215" y1="459" x2="245.5" y2="406.2"/>
+        <line x1="215" y1="459" x2="184.5" y2="406.2"/>
+        <line x1="215" y1="459" x2="154" y2="459"/>
+        <line x1="215" y1="459" x2="184.5" y2="511.8"/>
+        <line x1="215" y1="459" x2="245.5" y2="511.8"/>
+      </g>
+      <circle cx="215" cy="459" r="10" fill="#263845"/>
+    </g>
+    <g id="front-wheel">
+      <circle cx="565" cy="459" r="71" fill="#F3F4E7" fill-opacity="0.38" stroke="#263845" stroke-width="11"/>
+      <circle cx="565" cy="459" r="62" fill="none" stroke="#ADB5AF" stroke-width="2"/>
+      <g stroke="#5C677D" stroke-width="2.5">
+        <line x1="565" y1="459" x2="626" y2="459"/>
+        <line x1="565" y1="459" x2="595.5" y2="406.2"/>
+        <line x1="565" y1="459" x2="534.5" y2="406.2"/>
+        <line x1="565" y1="459" x2="504" y2="459"/>
+        <line x1="565" y1="459" x2="534.5" y2="511.8"/>
+        <line x1="565" y1="459" x2="595.5" y2="511.8"/>
+      </g>
+      <circle cx="565" cy="459" r="10" fill="#263845"/>
+    </g>
+
+    <g fill="none" stroke="#8338EC" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M215 459 334 351 379 459 215 459"/>
+      <path d="M334 351H493L379 459"/>
+      <path d="M493 351 565 459"/>
+    </g>
+    <path d="M493 351 565 459" fill="none" stroke="#6A28BE" stroke-width="4" stroke-linecap="round"/>
+    <path d="M319 336h55" stroke="#263845" stroke-width="10" stroke-linecap="round"/>
+    <path d="M492 350 505 327h43" fill="none" stroke="#263845" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M548 327h19" stroke="#F95738" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="379" cy="459" r="18" fill="#263845"/>
+    <circle cx="379" cy="459" r="7" fill="#C5CBD0"/>
+    <path d="M379 459 398 484h24" fill="none" stroke="#263845" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M379 459 360 435h-23" fill="none" stroke="#263845" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g id="pelican">
+    <path d="M337 320q-23 25-12 50l35 65" fill="none" stroke="#D9A86A" stroke-width="14" stroke-linecap="round"/>
+    <path d="M395 323q5 31-1 53l5 108" fill="none" stroke="#D9A86A" stroke-width="14" stroke-linecap="round"/>
+    <path d="M357 435l-16 0m56 49h24" fill="none" stroke="#D9A86A" stroke-width="11" stroke-linecap="round"/>
+
+    <path d="M270 298q-17-16-45-8 13 16 44 19" fill="#E4D5B5" stroke="#BDA77D" stroke-width="3"/>
+    <path d="M278 280q38-28 83-18 39 7 65 41 15 33-4 50-36 16-94-2-35-11-49-39-7-15-1-32Z" fill="#F7F1DD" stroke="#BDA77D" stroke-width="4"/>
+    <path d="M295 302q43-4 78 30-41 4-70-11" fill="#DFD2B4" stroke="#BDA77D" stroke-width="3"/>
+    <path d="M412 300q20-27 15-57-6-34 7-57 11-20 31-21 23 1 32 21 5 13 0 23-8 20-22 30-7 29-19 57-16 24-44 23Z" fill="#F7F1DD" stroke="#BDA77D" stroke-width="4"/>
+
+    <path d="M472 222q38 0 85 13-21 15-77 12-11-8-8-25Z" fill="#F3A74A" stroke="#A96D34" stroke-width="3"/>
+    <path d="M478 242q27 1 65-5-8 34-28 38-22 1-37-33Z" fill="#F8C56F" stroke="#A96D34" stroke-width="3"/>
+    <path d="M482 243q30 7 60-4" fill="none" stroke="#A96D34" stroke-width="2"/>
+    <circle cx="466" cy="196" r="4" fill="#0B132B"/>
+    <circle cx="467" cy="194.5" r="1" fill="#FFFFFF"/>
+
+    <path d="M418 259q22 8 43-3l6 14q-21 14-46 5Z" fill="#F95738" stroke="#B83D2D" stroke-width="2"/>
+    <path d="M425 271q-5 23-18 31l-7-8q10-20 11-27Z" fill="#F95738" stroke="#B83D2D" stroke-width="2"/>
+    <path d="M448 268q7 27 22 35l7-8q-12-18-12-30Z" fill="#F95738" stroke="#B83D2D" stroke-width="2"/>
+
+    <path d="M396 297q45 3 61 20l36 16" fill="none" stroke="#E9DCC0" stroke-width="19" stroke-linecap="round"/>
+    <path d="M484 332q12-6 24-5" fill="none" stroke="#D9A86A" stroke-width="10" stroke-linecap="round"/>
+    <path d="M501 327q11 2 18 1" fill="none" stroke="#D9A86A" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <g id="basket">
+    <path d="M558 337h95l-9 59h-76Z" fill="#B97849" stroke="#6B432D" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M563 355h87m-84 17h81m-59-32 4 52m25-52-3 52" stroke="#E7B878" stroke-width="4" opacity="0.8"/>
+    <path d="M554 334h103" stroke="#5F3C2B" stroke-width="8" stroke-linecap="round"/>
+    <g id="fish">
+      <path d="M582 350q22-17 47 0-25 17-47 0Z" fill="#00B4D8" stroke="#087E9D" stroke-width="2"/>
+      <path d="M583 350 570 339v22Z" fill="#00B4D8" stroke="#087E9D" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M604 339l6-9 9 10" fill="#00B4D8" stroke="#087E9D" stroke-width="2"/>
+      <circle cx="619" cy="347" r="2" fill="#0B132B"/>
+      <path d="M622 354q5 4 9 0" fill="none" stroke="#087E9D" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

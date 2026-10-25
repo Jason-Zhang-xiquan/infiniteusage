@@ -1,0 +1,109 @@
+src/services/router.ts:86:  keylessSkipped = 0,
+src/services/router.ts:93:  const keylessSuffix = keylessSkipped > 0
+src/services/router.ts:94:    ? ` ${keylessSkipped} model${keylessSkipped === 1 ? '' : 's'} skipped: no key configured for their platform.`
+src/services/router.ts:97:    return `All models exhausted. ${EXHAUSTION_ADVICE}${etaSuffix}${keylessSuffix}`;
+src/services/router.ts:128:  return `All models exhausted: ${total} route${total === 1 ? '' : 's'} checked (${parts.join(', ')}). ${EXHAUSTION_ADVICE}${etaSuffix}${keylessSuffix}`;
+src/services/router.ts:2052:    // keyless provider (for example a free relay) while a configured provider
+src/services/router.ts:2206:  const keylessSkipped = sortedChain.length - routableChain.length;
+src/services/router.ts:2211:  const keylessLine = keylessSkipped > 0
+src/services/router.ts:2212:    ? `${keylessSkipped} model(s) skipped: no enabled+healthy key for platform (${
+src/services/router.ts:2318:  // The aggregate keyless line rides in diagnostics but NOT in the summary's
+src/services/router.ts:2321:    summarizeExhaustion(diag, getSoonestCooldownExpiry(), Date.now(), keylessSkipped),
+src/services/router.ts:2323:    keylessLine ? [...diag, keylessLine] : diag,
+src/services/provider-quota.ts:240:  // keyless probes we could run (401s, unauthenticated /v1/models) carry no
+src/services/declarative-config.ts:167:// keyless (pollinations lost `keyless: true` in #573), a legacy declarative
+src/services/declarative-config.ts:180:  if (!provider || provider.keyless) return null;
+src/services/declarative-config.ts:192:  const keyToStore = input.key?.trim() || (provider?.keyless ? 'no-key' : '');
+src/providers/base.ts:229:  keyless = false;
+src/providers/index.ts:268:// (keyless) access for `:free` routes, rate-limited 200 req/hr per IP — so this
+src/providers/index.ts:269:// is registered `keyless: true`: the provider omits the Authorization header and
+src/providers/index.ts:272:// real model list (`/api/gateway/models`, no `/v1`) which answers GET keyless;
+src/providers/index.ts:280:  keyless: true,
+src/providers/index.ts:324:// keyless row is the no-card path this catalog ships. Live-probed keyless
+src/providers/index.ts:332:  keyless: true,
+src/providers/index.ts:606:// seconds (120s timeout, no upstream streaming). Registered keyless so it
+src/providers/aihorde.ts:36: *    (lowest queue priority). Registered keyless so the gateway auto-configures
+src/providers/aihorde.ts:71:  keyless = true;
+src/providers/aihorde.ts:74:  /** Map the stored credential to the bearer we send upstream. The keyless flow
+src/providers/aihorde.ts:204:   * endpoint means the platform is healthy. Mirrors keyless providers: only a
+src/providers/parallel.ts:9:// Parallel (parallel.ai): keyless web search. The Search MCP server answers
+src/providers/parallel.ts:21:  keyless = true;
+src/__tests__/services/quirks.test.ts:52:    const keyless = defs.find((d) => d.slug === 'keyless-anonymous');
+src/__tests__/services/quirks.test.ts:53:    expect(keyless).toBeDefined();
+src/__tests__/services/quirks.test.ts:56:    const platforms = keyless!.targets.map((t) => t.platform).sort();
+src/routes/proxy.ts:320:  // what's connected vs. disabled/keyless (#242). `?available=true` (aliases
+src/routes/proxy.ts:326:  // instance of a model id over a disabled/keyless one.
+src/providers/openai-compat.ts:113:    keyless?: boolean;
+src/providers/openai-compat.ts:125:    this.keyless = opts.keyless ?? false;
+src/providers/openai-compat.ts:188:  /** Anonymous access sends NO Authorization header: keyless providers
+src/providers/openai-compat.ts:192:   * as an invalid key. A REAL key saved on a keyless platform is used instead
+src/providers/modelscope.ts:31: *   GET /v1/models returns 200 WITHOUT auth — and, verified keyless on
+src/__tests__/services/media.test.ts:178:    it('Pollinations: keyless GET, raw bytes → b64_json (no api key needed)', async () => {
+src/__tests__/services/media.test.ts:619:    it('Pollinations openai-audio: keeps OpenAI voices and defaults unknown names (keyless)', async () => {
+src/__tests__/services/fusion.test.ts:53:  it('explicit unified aliases prefer a keyed provider over a keyless duplicate', () => {
+src/__tests__/services/fusion.test.ts:59:    // Make the keyless row win the normal deterministic ordering. The fusion
+src/__tests__/providers/modelscope.test.ts:22:// The verified keyless probe (2026-07-26): a 401 from chat/completions with a
+src/__tests__/providers/modelscope.test.ts:45:    expect(provider?.keyless).toBe(false);
+src/__tests__/providers/modelscope.test.ts:54:    // (verified keyless 2026-07-26), so the default openai-compat validateKey
+src/routes/keys.ts:80:// `key` is optional so keyless providers (Kilo's anonymous gateway) can be added
+src/routes/keys.ts:323:        keyless: p.keyless,
+src/routes/keys.ts:443:      // AI Horde). `keyless`: THIS row is the anonymous sentinel, so there is
+src/routes/keys.ts:446:      keyOptional: resolveProvider(row.platform)?.keyless === true,
+src/routes/keys.ts:447:      keyless: resolveProvider(row.platform)?.keyless === true && isAnonymousCredential(realKey),
+src/routes/keys.ts:680:  const isKeyless = resolveProvider(platform)?.keyless === true;
+src/__tests__/providers/aihorde.test.ts:39:  it('has correct platform/name and is keyless', () => {
+src/__tests__/providers/aihorde.test.ts:42:    expect(provider.keyless).toBe(true);
+src/__tests__/providers/aihorde.test.ts:81:  it('maps the keyless sentinel to the anonymous key, and forwards a real key', async () => {
+src/__tests__/services/declarative-config.test.ts:110:  // #600: pollinations lost `keyless: true` in #573, so a legacy declarative
+src/__tests__/services/declarative-config.test.ts:111:  // config with a keyless-era pollinations entry (no `key`) used to throw at
+src/__tests__/services/declarative-config.test.ts:114:  it('skips a legacy keyless entry without a key, warns, and still applies the rest', () => {
+src/__tests__/services/declarative-config.test.ts:137:  it('boot apply (FromEnv) survives a legacy keyless pollinations entry', () => {
+src/__tests__/services/declarative-config.test.ts:163:  it('generic missing-key skip covers any non-keyless platform, with a platform-named warning', () => {
+src/__tests__/services/declarative-config.test.ts:178:  it('a keyless platform entry without a key still applies its sentinel row', () => {
+src/__tests__/services/exhaustion-summary.test.ts:57:  describe('keyless-skipped count', () => {
+src/__tests__/providers/plugsky.test.ts:14:    expect(getProvider('plugsky')!.keyless).toBe(false);
+src/__tests__/providers/catalog-gateways.test.ts:31:    expect(getProvider(config.platform)!.keyless).toBe(false);
+src/__tests__/services/routing-keyless-filter.test.ts:51:describe('keyless-platform prefilter', () => {
+src/__tests__/services/routing-keyless-filter.test.ts:89:  // The absent diag line IS the proof the row was never walked: a keyless model
+src/__tests__/services/routing-keyless-filter.test.ts:92:  it('keeps keyless models out of the walk, the diagnostics, and the route count', () => {
+src/__tests__/services/routing-keyless-filter.test.ts:96:    // Walked rows + exactly ONE aggregate line for the two keyless platforms.
+src/__tests__/services/routing-keyless-filter.test.ts:133:  it('reports the skip count even when every candidate is keyless', () => {
+src/__tests__/providers/typhoon.test.ts:20:    expect(getProvider('typhoon')!.keyless).toBe(false);
+src/__tests__/providers/search-providers.test.ts:61:describe('Parallel keyless validation', () => {
+src/__tests__/providers/search-providers.test.ts:62:  it('is keyless', () => {
+src/__tests__/providers/search-providers.test.ts:63:    expect(new ParallelProvider().keyless).toBe(true);
+src/__tests__/providers/auray.test.ts:21:    expect(getProvider('auray')!.keyless).toBe(false);
+src/__tests__/providers/pollinations.test.ts:43:    expect(provider?.keyless).toBe(false);
+src/__tests__/services/search.test.ts:137:  describe('Parallel (keyless)', () => {
+src/__tests__/services/quota-outlook.test.ts:138:it('includes keyless successful usage but excludes failed, old and future traffic', () => {
+src/__tests__/providers/keyless-bearer-1331.test.ts:6:// #1331: a real API key saved on a keyless platform (Kilo, OVH) was silently
+src/__tests__/providers/keyless-bearer-1331.test.ts:10:// the CREDENTIAL, not on the provider's keyless flag.
+src/__tests__/providers/keyless-bearer-1331.test.ts:11:describe('keyless bearer handling (#1331)', () => {
+src/__tests__/providers/keyless-bearer-1331.test.ts:29:  function keyless(platform: 'kilo' | 'ovh'): OpenAICompatProvider {
+src/__tests__/providers/keyless-bearer-1331.test.ts:31:      platform: platform as any, name: 'Keyless', baseUrl: 'https://x.test/v1', keyless: true,
+src/__tests__/providers/keyless-bearer-1331.test.ts:43:  it('keyless provider with a REAL key sends the bearer (was: anonymous)', async () => {
+src/__tests__/providers/keyless-bearer-1331.test.ts:46:    await keyless('kilo').chatCompletion('real-kilo-key-123', [{ role: 'user', content: 'hi' }], 'm');
+src/__tests__/providers/keyless-bearer-1331.test.ts:50:  it('keyless provider with the no-key sentinel sends NO Authorization header', async () => {
+src/__tests__/providers/keyless-bearer-1331.test.ts:53:    await keyless('kilo').chatCompletion('no-key', [{ role: 'user', content: 'hi' }], 'm');
+src/__tests__/providers/keyless-bearer-1331.test.ts:86:      expect(resolveProvider(platform)?.keyless).toBe(true);
+src/__tests__/routes/proxy-auto-model.test.ts:123:    // The unfiltered list is strictly larger — the keyless models reappear.
+src/docs/openapi.ts:38:    { name: 'Search', description: 'Web search over Parallel (keyless) and your Tavily, Exa, Firecrawl and Linkup keys' },
+src/db/migrations/20260101_000000_legacy_baseline.ts:1643: * V20 (June 2026): Kilo Gateway anonymous free models. Live-probed keyless
+src/db/migrations/20260101_000000_legacy_baseline.ts:1651: * 'kilo' api_keys sentinel row, added via the keyless Keys-page flow. Idempotent
+src/db/migrations/20260101_000000_legacy_baseline.ts:1952:// keyless provider, Pollinations keyless, the V22 north-mini-code tools rule,
+src/db/migrations/20260101_000000_legacy_baseline.ts:2052: * quirk routinely covers many models (a whole platform's keyless access, an
+src/db/migrations/20260101_000000_legacy_baseline.ts:2110:      slug: 'keyless-anonymous',
+src/db/migrations/20260101_000000_legacy_baseline.ts:2112:      body: 'Routes anonymously — the catalog ships a keyless sentinel row and calls work with no account or key.',
+src/db/migrations/20260101_000000_legacy_baseline.ts:2119:      body: 'OVH AI Endpoints anonymous mode is documented at 2 req/min per IP per model (observed even stricter across models). The 400 req/min authenticated tier requires a Public Cloud project with a payment method, so the catalog ships the keyless path. Treat as a breadth/fallback tier, not a throughput tier.',
+src/__tests__/routes/keys-providers-checklist.test.ts:55:    expect(typeof groq.keyless).toBe('boolean');
+src/__tests__/routes/keys-providers-checklist.test.ts:57:      .toMatchObject({ platform: 'moondream', name: 'Moondream', configured: false, keyless: false });
+src/__tests__/routes/keys-providers-checklist.test.ts:59:      .toMatchObject({ platform: 'llmtr', name: 'LLMTR', configured: false, keyless: false });
+src/__tests__/routes/keys-providers-checklist.test.ts:61:      .toMatchObject({ platform: 'typhoon', name: 'Typhoon', configured: false, keyless: false });
+src/__tests__/routes/keys-providers-checklist.test.ts:63:      .toMatchObject({ platform: 'plugsky', name: 'Plugsky', configured: false, keyless: false });
+src/__tests__/routes/keys-providers-checklist.test.ts:66:        .toMatchObject({ platform, name, configured: false, keyless: false });
+src/__tests__/routes/keys.test.ts:425:    expect(keys[0]).toMatchObject({ platform, keyless: true, keyOptional: true, exportable: false });
+src/__tests__/routes/keys.test.ts:435:    expect(keys[0]).toMatchObject({ platform, label: 'mine', keyless: false, keyOptional: true, exportable: true });
+src/__tests__/routes/custom-provider-multikey.test.ts:116:  it('upgrades a keyless endpoint in place when a real key arrives', async () => {
+src/__tests__/routes/custom-provider-multikey.test.ts:253:    it('upgrades a keyless endpoint in place rather than adding a row', async () => {
+src/__tests__/routes/free-tier.test.ts:94:    // google is deliberately left keyless.
+src/__tests__/routes/custom-transcription.test.ts:166:  it('keyless endpoint (auth off) reaches the box with no Authorization header (#1331)', async () => {

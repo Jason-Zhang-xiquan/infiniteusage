@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+<!-- iu-pelican-v3 -->
+  <title id="title">Pelican riding a bicycle</title>
+  <desc id="desc">A scarf-wearing pelican pedals a purple bicycle past a roadside sign, with a fish in the front basket.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD166"/>
+      <stop offset="1" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- Sunshine: one circle and eight straight rays. -->
+  <g stroke="#FB8500" stroke-width="5" stroke-linecap="round">
+    <line x1="96" y1="28" x2="96" y2="13"/>
+    <line x1="96" y1="172" x2="96" y2="187"/>
+    <line x1="24" y1="100" x2="9" y2="100"/>
+    <line x1="168" y1="100" x2="183" y2="100"/>
+    <line x1="45" y1="49" x2="34" y2="38"/>
+    <line x1="147" y1="151" x2="158" y2="162"/>
+    <line x1="147" y1="49" x2="158" y2="38"/>
+    <line x1="45" y1="151" x2="34" y2="162"/>
+  </g>
+  <circle cx="96" cy="100" r="56" fill="#FFB703"/>
+
+  <path d="M545 101c0-16 13-28 28-28 8 0 15 3 20 9 6-13 19-22 34-22 20 0 36 14 39 33 4-2 9-3 14-3 17 0 30 13 30 29 0 17-14 29-31 29H555c-17 0-30-11-30-25 0-11 8-20 20-22Z" fill="#F1FAEE" opacity="0.8"/>
+
+  <!-- Seven birds in the sky. -->
+  <g fill="none" stroke="#2B2D42" stroke-width="2.5" stroke-linecap="round">
+    <path d="M235 87q8-9 16 0q8-9 16 0"/>
+    <path d="M281 63q7-8 14 0q7-8 14 0"/>
+    <path d="M323 105q8-9 16 0q8-9 16 0"/>
+    <path d="M374 70q6-7 12 0q6-7 12 0"/>
+    <path d="M419 107q7-8 14 0q7-8 14 0"/>
+    <path d="M475 62q6-7 12 0q6-7 12 0"/>
+    <path d="M513 145q7-8 14 0q7-8 14 0"/>
+  </g>
+
+  <!-- Low hills and the road. -->
+  <path d="M0 469Q143 416 275 475Q447 417 602 474Q705 435 800 466V600H0Z" fill="#83C78A" opacity="0.6"/>
+  <path d="M0 540H800V600H0Z" fill="#E9D8A6"/>
+  <path d="M0 543H800" fill="none" stroke="#776B58" stroke-width="3" stroke-dasharray="12 8"/>
+
+  <!-- Roadside sign and its tiny ladybug. -->
+  <path d="M735 341v199" stroke="#6B705C" stroke-width="10" stroke-linecap="round"/>
+  <rect x="665" y="343" width="126" height="75" rx="10" fill="#FFF8E7" stroke="#6B705C" stroke-width="5"/>
+  <text x="728" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="29" font-weight="bold" fill="#2B2D42">IU-46</text>
+  <ellipse cx="715" cy="339" rx="8" ry="6" fill="#D7263D"/>
+  <circle cx="709" cy="338" r="3" fill="#20202A"/>
+  <circle cx="715" cy="337" r="1.4" fill="#20202A"/>
+  <path d="M716 334v10" stroke="#20202A" stroke-width="1"/>
+
+  <!-- Wheels, each with six spokes. -->
+  <g fill="none">
+    <circle cx="226" cy="450" r="88" stroke="#27313E" stroke-width="12"/>
+    <circle cx="226" cy="450" r="75" stroke="#F4F1DE" stroke-width="3"/>
+    <circle cx="554" cy="450" r="88" stroke="#27313E" stroke-width="12"/>
+    <circle cx="554" cy="450" r="75" stroke="#F4F1DE" stroke-width="3"/>
+  </g>
+  <g stroke="#5C677D" stroke-width="2.5">
+    <line x1="226" y1="450" x2="226" y2="375"/><line x1="226" y1="450" x2="291" y2="412"/>
+    <line x1="226" y1="450" x2="291" y2="488"/><line x1="226" y1="450" x2="226" y2="525"/>
+    <line x1="226" y1="450" x2="161" y2="488"/><line x1="226" y1="450" x2="161" y2="412"/>
+    <line x1="554" y1="450" x2="554" y2="375"/><line x1="554" y1="450" x2="619" y2="412"/>
+    <line x1="554" y1="450" x2="619" y2="488"/><line x1="554" y1="450" x2="554" y2="525"/>
+    <line x1="554" y1="450" x2="489" y2="488"/><line x1="554" y1="450" x2="489" y2="412"/>
+  </g>
+  <g fill="#5C677D">
+    <circle cx="226" cy="450" r="9"/><circle cx="554" cy="450" r="9"/>
+  </g>
+
+  <!-- Bicycle frame, fork, handlebars, saddle and pedals. -->
+  <g fill="none" stroke="#8338EC" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M226 450 328 348 391 450 226 450M328 348h170L391 450M498 348l56 102"/>
+    <path d="M328 348l-15-40"/>
+    <path d="M498 348l-13-43h46"/>
+  </g>
+  <path d="M288 306h73" stroke="#292B36" stroke-width="13" stroke-linecap="round"/>
+  <path d="M531 305h18q11 0 11 10" fill="none" stroke="#292B36" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="391" cy="450" r="17" fill="#FB8500" stroke="#292B36" stroke-width="4"/>
+  <path d="M391 450l-29 31m29-31 27-31" fill="none" stroke="#292B36" stroke-width="5" stroke-linecap="round"/>
+  <path d="M348 484h27m29-67h28" stroke="#292B36" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Basket and its passenger fish. -->
+  <path d="M529 316h92l-12 76h-65Z" fill="#C17C47" stroke="#6F4930" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M539 343h78m-74 22h70m-54-45 2 68m28-68-3 68" stroke="#8D5A37" stroke-width="3" opacity="0.8"/>
+  <path d="M558 336q25-35 48 0l18-16v32l-18-16q-23 35-48 0Z" fill="#00B4D8" stroke="#076681" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="572" cy="330" r="2.8" fill="#0B132B"/>
+  <path d="M583 317q11-16 17-12l-3 20" fill="#00B4D8" stroke="#076681" stroke-width="2"/>
+
+  <!-- Pelican: tail, body, wing, long neck and pouch. -->
+  <path d="M283 295q-37 1-66-31 38 8 78 1Z" fill="#FFF7DF" stroke="#C7BFA9" stroke-width="3"/>
+  <path d="M281 256q-8-66 63-88 53-15 78 23 10 26-7 59-30 48-76 79-56 4-58-73Z" fill="#FFF7DF" stroke="#C7BFA9" stroke-width="4"/>
+  <path d="M324 219q42-8 67 23-21 58-73 62-41-25-36-59 16 1 42-26Z" fill="#ECE4CA" stroke="#C7BFA9" stroke-width="3"/>
+  <path d="M350 279q-5 14-14 21" fill="none" stroke="#C7BFA9" stroke-width="3" stroke-linecap="round"/>
+  <path d="M391 223q-3-42 9-76 15-38 44-48 23-8 46 8-25 2-37 24-15 26-13 83Z" fill="#FFF7DF" stroke="#C7BFA9" stroke-width="4"/>
+  <path d="M425 119q-5-24 13-38 22-17 44-4 20 12 21 36-3 26-22 37-22 3-56-31Z" fill="#FFF7DF" stroke="#C7BFA9" stroke-width="4"/>
+  <path d="M484 126q17 22 77 20-18 46-49 55-30-2-42-25Z" fill="#F5A95B" stroke="#CE7942" stroke-width="3"/>
+  <path d="M480 120q43 1 100 19-60 13-105 5Z" fill="#F9C36A" stroke="#CE7942" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="464" cy="102" r="4" fill="#0B132B"/>
+  <path d="M476 78q5-18 18-19" fill="none" stroke="#C7BFA9" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Scarf and flying tails. -->
+  <path d="M399 165q24 13 51-4l9 18q-29 20-58 4Z" fill="#F95738" stroke="#B93F2F" stroke-width="2"/>
+  <path d="M407 177q-25 4-68-6l17 16-13 12q38 1 67-7Z" fill="#F95738" stroke="#B93F2F" stroke-width="2"/>
+
+  <!-- Feet on the pedals and a wing reaching the handlebar. -->
+  <path d="M330 308q12 36 34 44l-2 112" fill="none" stroke="#E89A50" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M371 291q10 27 45 45l3 80" fill="none" stroke="#E89A50" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M350 480q13 9 26 0m30-61q13 9 26 0" fill="none" stroke="#E89A50" stroke-width="7" stroke-linecap="round"/>
+  <path d="M364 232q44 15 85 35 26 12 52 32l31 10" fill="none" stroke="#FFF7DF" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M525 305q14 10 25 4" fill="none" stroke="#E89A50" stroke-width="7" stroke-linecap="round"/>
+</svg>

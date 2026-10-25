@@ -1,0 +1,16 @@
+{
+ "id": "rg_keyless",
+ "kind": "sum",
+ "command": "rg -n keyless src",
+ "exit": 0,
+ "goal": "Which provider source files (not tests) declare a keyless provider (keyless = true or keyless: true), with line numbers?",
+ "question": "",
+ "files": [],
+ "required": [],
+ "locations": [
+  "aihorde.ts:71",
+  "index.ts:280",
+  "index.ts:332",
+  "parallel.ts:21"
+ ]
+}

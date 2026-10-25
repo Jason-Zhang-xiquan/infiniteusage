@@ -1,0 +1,24 @@
+{
+ "id": "git_log",
+ "kind": "sum",
+ "command": "git log --stat -40 origin/main",
+ "exit": 0,
+ "goal": "Which of these commits touched server/src/lib/key-parser.ts? Give their short hashes and subjects.",
+ "question": "",
+ "files": [],
+ "required": [
+  [
+   "cece2df"
+  ],
+  [
+   "08a7100"
+  ],
+  [
+   "5a3abac"
+  ],
+  [
+   "a2b78ce"
+  ]
+ ],
+ "locations": []
+}

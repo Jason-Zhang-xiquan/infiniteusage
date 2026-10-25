@@ -1,0 +1,21 @@
+{
+ "id": "node_crash",
+ "kind": "sum",
+ "command": "node /tmp/iu_crash.js",
+ "exit": 1,
+ "goal": "",
+ "question": "",
+ "files": [],
+ "required": [
+  [
+   "perMinute"
+  ],
+  [
+   "TypeError"
+  ]
+ ],
+ "locations": [
+  "iu_crash.js:2",
+  "iu_crash.js:3"
+ ]
+}

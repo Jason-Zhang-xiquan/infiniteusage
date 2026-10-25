@@ -1,0 +1,135 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+<!-- iu-pelican-v3 -->
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFD166"/>
+      <stop offset="100%" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- sky -->
+  <rect x="0" y="0" width="800" height="600" fill="url(#skyGrad)"/>
+
+  <!-- sun -->
+  <g>
+    <line x1="80" y1="80" x2="80" y2="20" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="80" y2="140" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="20" y2="80" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="140" y2="80" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="37" y2="37" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="123" y2="37" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="37" y2="123" stroke="#FB8500" stroke-width="4"/>
+    <line x1="80" y1="80" x2="123" y2="123" stroke="#FB8500" stroke-width="4"/>
+    <circle cx="80" cy="80" r="38" fill="#FFB703"/>
+  </g>
+
+  <!-- cloud -->
+  <g fill="#F1FAEE" opacity="0.8">
+    <ellipse cx="610" cy="110" rx="55" ry="26"/>
+    <ellipse cx="570" cy="120" rx="38" ry="20"/>
+    <ellipse cx="650" cy="118" rx="40" ry="20"/>
+  </g>
+
+  <!-- birds -->
+  <g fill="none" stroke="#2B2D42" stroke-width="3" stroke-linecap="round">
+    <path d="M 150,60 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 260,100 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 340,50 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 560,60 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 700,90 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 230,160 q 10,-14 20,0 q 10,-14 20,0"/>
+    <path d="M 420,130 q 10,-14 20,0 q 10,-14 20,0"/>
+  </g>
+
+  <!-- ground -->
+  <rect x="0" y="480" width="800" height="120" fill="#8AC926"/>
+  <line x1="0" y1="480" x2="800" y2="480" stroke="#4A3728" stroke-width="3" stroke-dasharray="12 8"/>
+
+  <!-- roadside sign -->
+  <g>
+    <line x1="650" y1="480" x2="650" y2="380" stroke="#4A3728" stroke-width="6"/>
+    <rect x="605" y="335" width="100" height="48" fill="#FFFFFF" stroke="#2B2D42" stroke-width="3"/>
+    <text x="655" y="366" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2B2D42" text-anchor="middle">IU-46</text>
+    <g>
+      <ellipse cx="655" cy="328" rx="7" ry="6" fill="#D7263D"/>
+      <line x1="655" y1="323" x2="655" y2="333" stroke="#2B2D42" stroke-width="1"/>
+      <circle cx="652" cy="326" r="1.2" fill="#2B2D42"/>
+      <circle cx="658" cy="326" r="1.2" fill="#2B2D42"/>
+      <circle cx="652" cy="330" r="1.2" fill="#2B2D42"/>
+    </g>
+  </g>
+
+  <!-- bicycle -->
+  <g>
+    <!-- wheels -->
+    <g fill="none" stroke="#5C677D" stroke-width="4">
+      <circle cx="320" cy="460" r="38"/>
+      <circle cx="480" cy="460" r="38"/>
+      <!-- rear spokes -->
+      <line x1="320" y1="460" x2="320" y2="422"/>
+      <line x1="320" y1="460" x2="353" y2="441"/>
+      <line x1="320" y1="460" x2="353" y2="479"/>
+      <line x1="320" y1="460" x2="320" y2="498"/>
+      <line x1="320" y1="460" x2="287" y2="479"/>
+      <line x1="320" y1="460" x2="287" y2="441"/>
+      <!-- front spokes -->
+      <line x1="480" y1="460" x2="480" y2="422"/>
+      <line x1="480" y1="460" x2="513" y2="441"/>
+      <line x1="480" y1="460" x2="513" y2="479"/>
+      <line x1="480" y1="460" x2="480" y2="498"/>
+      <line x1="480" y1="460" x2="447" y2="479"/>
+      <line x1="480" y1="460" x2="447" y2="441"/>
+    </g>
+
+    <!-- frame -->
+    <g stroke="#8338EC" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="320" y1="460" x2="400" y2="445"/>
+      <line x1="400" y1="445" x2="480" y2="460"/>
+      <line x1="400" y1="445" x2="385" y2="392"/>
+      <line x1="385" y1="392" x2="320" y2="460"/>
+      <line x1="385" y1="392" x2="455" y2="388"/>
+      <line x1="455" y1="388" x2="480" y2="460"/>
+      <line x1="455" y1="388" x2="460" y2="365"/>
+      <line x1="445" y1="362" x2="475" y2="362"/>
+    </g>
+    <!-- saddle -->
+    <rect x="373" y="387" width="24" height="8" rx="3" fill="#2B2D42"/>
+    <!-- pedal crank -->
+    <circle cx="400" cy="445" r="6" fill="#5C677D"/>
+
+    <!-- front basket -->
+    <g>
+      <rect x="462" y="398" width="46" height="30" fill="none" stroke="#5C677D" stroke-width="3"/>
+      <line x1="462" y1="408" x2="508" y2="408" stroke="#5C677D" stroke-width="2"/>
+      <line x1="462" y1="418" x2="508" y2="418" stroke="#5C677D" stroke-width="2"/>
+      <!-- fish -->
+      <g fill="#00B4D8">
+        <ellipse cx="485" cy="412" rx="16" ry="8"/>
+        <polygon points="469,412 459,406 459,418"/>
+        <circle cx="494" cy="410" r="1.5" fill="#0B132B"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- pelican -->
+  <g>
+    <!-- legs -->
+    <line x1="388" y1="392" x2="400" y2="445" stroke="#FB8500" stroke-width="5"/>
+    <!-- body -->
+    <ellipse cx="400" cy="345" rx="48" ry="58" fill="#F8F9FA" stroke="#CED4DA" stroke-width="2"/>
+    <!-- wing -->
+    <path d="M 375,320 q 40,10 20,70 q -30,-5 -35,-40 q 0,-20 15,-30 z" fill="#E9ECEF" stroke="#CED4DA" stroke-width="2"/>
+    <!-- neck -->
+    <path d="M 435,305 q 30,-20 45,-15" fill="none" stroke="#F8F9FA" stroke-width="30" stroke-linecap="round"/>
+    <!-- scarf -->
+    <path d="M 442,300 q 18,-10 32,-8" fill="none" stroke="#F95738" stroke-width="14" stroke-linecap="round"/>
+    <path d="M 468,298 l 10,22 l 10,-16 z" fill="#F95738"/>
+    <!-- head -->
+    <circle cx="478" cy="292" r="24" fill="#F8F9FA" stroke="#CED4DA" stroke-width="2"/>
+    <!-- beak -->
+    <path d="M 500,286 q 50,-4 60,10 q -10,14 -60,8 z" fill="#FB8500" stroke="#E07000" stroke-width="2"/>
+    <path d="M 502,298 q 40,10 55,4" fill="none" stroke="#E07000" stroke-width="1.5"/>
+    <!-- eye -->
+    <circle cx="486" cy="285" r="3.5" fill="#0B132B"/>
+  </g>
+</svg>

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="A pelican wearing a red-orange scarf rides a purple bicycle past a roadside sign">
+  <!-- iu-pelican-v3 -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD166"/>
+      <stop offset="1" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <g aria-label="sun">
+    <circle cx="95" cy="92" r="34" fill="#FFB703"/>
+    <g stroke="#FB8500" stroke-width="5" stroke-linecap="round">
+      <line x1="95" y1="43" x2="95" y2="25"/>
+      <line x1="130" y1="57" x2="143" y2="44"/>
+      <line x1="144" y1="92" x2="162" y2="92"/>
+      <line x1="130" y1="127" x2="143" y2="140"/>
+      <line x1="95" y1="141" x2="95" y2="159"/>
+      <line x1="60" y1="127" x2="47" y2="140"/>
+      <line x1="46" y1="92" x2="28" y2="92"/>
+      <line x1="60" y1="57" x2="47" y2="44"/>
+    </g>
+  </g>
+
+  <path d="M603 111c9-13 25-14 35-4 13-10 31-3 33 11 19-4 35 7 35 21H584c-5-12 3-25 19-28Z" fill="#F1FAEE" opacity="0.8"/>
+
+  <g fill="none" stroke="#2B2D42" stroke-width="2.5" stroke-linecap="round" aria-label="seven birds in the sky">
+    <path d="M205 86q8-9 16 0 8-9 16 0"/>
+    <path d="M251 118q7-8 14 0 7-8 14 0"/>
+    <path d="M308 71q9-10 18 0 9-10 18 0"/>
+    <path d="M364 113q7-8 14 0 7-8 14 0"/>
+    <path d="M429 67q8-9 16 0 8-9 16 0"/>
+    <path d="M493 101q7-8 14 0 7-8 14 0"/>
+    <path d="M543 58q8-9 16 0 8-9 16 0"/>
+  </g>
+
+  <path d="M0 505H800" fill="none" stroke="#506B52" stroke-width="4" stroke-dasharray="12 8"/>
+  <path d="M0 510H800V600H0Z" fill="#67A65D" opacity="0.55"/>
+
+  <g aria-label="roadside sign">
+    <path d="M721 370V504" stroke="#58624B" stroke-width="8" stroke-linecap="round"/>
+    <rect x="674" y="323" width="94" height="57" rx="7" fill="#FFF5D6" stroke="#58624B" stroke-width="4"/>
+    <text x="721" y="359" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2B2D42">IU-46</text>
+    <g aria-label="ladybug">
+      <circle cx="719" cy="317" r="9" fill="#D7263D"/>
+      <path d="M719 309v16" stroke="#2B2D42" stroke-width="1.5"/>
+      <circle cx="715" cy="315" r="1.4" fill="#2B2D42"/>
+      <circle cx="723" cy="319" r="1.4" fill="#2B2D42"/>
+      <circle cx="719" cy="306" r="3" fill="#2B2D42"/>
+    </g>
+  </g>
+
+  <g aria-label="bicycle">
+    <circle cx="225" cy="455" r="73" fill="none" stroke="#2B2D42" stroke-width="11"/>
+    <circle cx="570" cy="455" r="73" fill="none" stroke="#2B2D42" stroke-width="11"/>
+    <g stroke="#5C677D" stroke-width="2.5">
+      <line x1="225" y1="455" x2="225" y2="382"/><line x1="225" y1="455" x2="288" y2="419"/>
+      <line x1="225" y1="455" x2="288" y2="491"/><line x1="225" y1="455" x2="225" y2="528"/>
+      <line x1="225" y1="455" x2="162" y2="491"/><line x1="225" y1="455" x2="162" y2="419"/>
+      <line x1="570" y1="455" x2="570" y2="382"/><line x1="570" y1="455" x2="633" y2="419"/>
+      <line x1="570" y1="455" x2="633" y2="491"/><line x1="570" y1="455" x2="570" y2="528"/>
+      <line x1="570" y1="455" x2="507" y2="491"/><line x1="570" y1="455" x2="507" y2="419"/>
+    </g>
+    <g fill="none" stroke="#8338EC" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M225 455 313 364 390 455 225 455Z"/>
+      <path d="M313 364 470 366 390 455"/>
+      <path d="M470 366 570 455"/>
+    </g>
+    <path d="M313 364 303 336" stroke="#2B2D42" stroke-width="8" stroke-linecap="round"/>
+    <path d="M280 335h54" stroke="#2B2D42" stroke-width="10" stroke-linecap="round"/>
+    <path d="M470 366 484 333h39" fill="none" stroke="#2B2D42" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="390" cy="455" r="17" fill="#E9ECEF" stroke="#2B2D42" stroke-width="4"/>
+    <path d="M390 455 419 476h25M390 455l-29-23h-24" fill="none" stroke="#2B2D42" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="225" cy="455" r="7" fill="#2B2D42"/><circle cx="570" cy="455" r="7" fill="#2B2D42"/>
+  </g>
+
+  <g aria-label="front basket with fish">
+    <path d="M521 347h105l-13 63h-78Z" fill="#BC7A3A" stroke="#754A2C" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M530 367h90M533 386h83M552 349l7 59M580 349l-1 59M605 349l-8 59" stroke="#754A2C" stroke-width="3" opacity="0.75"/>
+    <path d="M552 337c17-16 43-14 57 0-14 15-40 18-57 0Z" fill="#00B4D8" stroke="#087E99" stroke-width="3"/>
+    <path d="m552 337-18-12v24Z" fill="#00B4D8" stroke="#087E99" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="596" cy="334" r="2.5" fill="#0B132B"/>
+  </g>
+
+  <g aria-label="pelican riding the bicycle">
+    <path d="M334 258c-25 0-47 26-43 55 4 31 34 48 74 47 33-1 59-20 70-48l-42-32Z" fill="#F8F4E9" stroke="#A8A397" stroke-width="4"/>
+    <path d="M317 287c-16 18-11 45 10 54 18 8 40-1 50-18-25 7-45-6-60-36Z" fill="#E9E4D8"/>
+    <path d="M385 302c-7 36-7 62 3 80l30 49" fill="none" stroke="#E39A42" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M414 294c7 33 10 64 1 88l-26 72" fill="none" stroke="#E39A42" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="m418 431 25 43m-54-20-27-24" fill="none" stroke="#E39A42" stroke-width="8" stroke-linecap="round"/>
+    <path d="M370 265c-4-54 16-93 53-105 44-13 68 17 58 54-5 18-22 33-42 44l-12 36Z" fill="#FFF9EC" stroke="#A8A397" stroke-width="4"/>
+    <path d="M457 218c22 11 56 17 100 13-24 20-67 25-100 12-13-5-17-16 0-25Z" fill="#F0B44C" stroke="#B5752B" stroke-width="3"/>
+    <path d="M463 215c31-10 71-12 118-7 8 1 9 9 1 12-42 11-85 12-122 6Z" fill="#F6C65F" stroke="#B5752B" stroke-width="3"/>
+    <circle cx="456" cy="198" r="4" fill="#0B132B"/>
+    <path d="M402 246c-14 5-27 16-31 27 19 12 37 11 53-1" fill="none" stroke="#F95738" stroke-width="15" stroke-linecap="round"/>
+    <path d="M380 271c-13 18-14 35-19 53l16 4c10-18 15-32 20-46Z" fill="#F95738"/>
+    <path d="M431 265c24 20 38 38 54 70" fill="none" stroke="#FFF9EC" stroke-width="15" stroke-linecap="round"/>
+    <path d="M484 335h31" stroke="#E39A42" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

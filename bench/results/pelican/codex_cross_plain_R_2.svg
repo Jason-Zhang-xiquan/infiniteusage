@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <!-- iu-pelican-v3 -->
+  <title id="title">骑自行车的鹈鹕</title>
+  <desc id="desc">一只戴红色围巾的鹈鹕骑着紫色自行车，车篮里有鱼，路旁有 IU-46 标志。</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD166"/>
+      <stop offset="100%" stop-color="#06D6A0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#sky)"/>
+
+  <!-- Morning sun: eight straight rays. -->
+  <g stroke="#FB8500" stroke-width="5" stroke-linecap="round">
+    <line x1="100" y1="20" x2="100" y2="39"/>
+    <line x1="100" y1="121" x2="100" y2="140"/>
+    <line x1="40" y1="80" x2="59" y2="80"/>
+    <line x1="141" y1="80" x2="160" y2="80"/>
+    <line x1="58" y1="38" x2="71" y2="51"/>
+    <line x1="129" y1="109" x2="142" y2="122"/>
+    <line x1="58" y1="122" x2="71" y2="109"/>
+    <line x1="129" y1="51" x2="142" y2="38"/>
+  </g>
+  <circle cx="100" cy="80" r="39" fill="#FFB703"/>
+
+  <!-- Seven distant birds. -->
+  <g fill="none" stroke="#2B2D42" stroke-width="2.5" stroke-linecap="round">
+    <path d="M215 72 Q222 65 229 72 Q236 65 243 72"/>
+    <path d="M265 106 Q272 99 279 106 Q286 99 293 106"/>
+    <path d="M326 62 Q333 55 340 62 Q347 55 354 62"/>
+    <path d="M396 99 Q403 92 410 99 Q417 92 424 99"/>
+    <path d="M473 65 Q480 58 487 65 Q494 58 501 65"/>
+    <path d="M552 105 Q559 98 566 105 Q573 98 580 105"/>
+    <path d="M633 71 Q640 64 647 71 Q654 64 661 71"/>
+  </g>
+
+  <path d="M544 169c0-13 11-24 25-24 8 0 16 4 20 10 5-9 15-15 26-15 17 0 31 13 31 30 12-1 22 8 22 20 0 13-10 22-24 22H552c-16 0-27-10-27-23 0-11 8-20 19-20Z" fill="#F1FAEE" opacity="0.8"/>
+
+  <!-- Road and grass. -->
+  <path d="M0 549 Q190 543 400 550 T800 548 V600 H0Z" fill="#58B368"/>
+  <path d="M0 551 H800" fill="none" stroke="#425B50" stroke-width="3" stroke-dasharray="12 8"/>
+
+  <!-- Roadside sign and its tiny passenger. -->
+  <path d="M711 379 V548" stroke="#6D5A45" stroke-width="11" stroke-linecap="round"/>
+  <rect x="662" y="329" width="98" height="57" rx="8" fill="#FFF5DF" stroke="#6D5A45" stroke-width="4"/>
+  <text x="711" y="366" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#2B2D42">IU-46</text>
+  <g>
+    <circle cx="710" cy="325" r="7" fill="#D7263D"/>
+    <circle cx="710" cy="325" r="1.4" fill="#2B2D42"/>
+    <circle cx="706" cy="322" r="1.2" fill="#2B2D42"/>
+    <circle cx="714" cy="328" r="1.2" fill="#2B2D42"/>
+    <circle cx="710" cy="317" r="3" fill="#2B2D42"/>
+  </g>
+
+  <!-- Bicycle wheels, with six spokes each. -->
+  <g fill="none" stroke="#2B2D42" stroke-width="8">
+    <circle cx="244" cy="455" r="91"/>
+    <circle cx="566" cy="455" r="91"/>
+  </g>
+  <g fill="none" stroke="#5C677D" stroke-width="3">
+    <path d="M244 455V364 M244 455L322.8 409.5 M244 455L322.8 500.5 M244 455V546 M244 455L165.2 500.5 M244 455L165.2 409.5"/>
+    <path d="M566 455V364 M566 455L644.8 409.5 M566 455L644.8 500.5 M566 455V546 M566 455L487.2 500.5 M566 455L487.2 409.5"/>
+  </g>
+  <g fill="#F1FAEE" stroke="#2B2D42" stroke-width="3">
+    <circle cx="244" cy="455" r="8"/>
+    <circle cx="566" cy="455" r="8"/>
+  </g>
+
+  <!-- Violet bicycle frame and controls. -->
+  <g fill="none" stroke="#8338EC" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M244 455 349 339 394 455 244 455 M349 339 500 340 394 455 M500 340 566 455"/>
+    <path d="M349 339 337 318 M500 340 491 314 525 314"/>
+  </g>
+  <path d="M314 315h66" stroke="#2B2D42" stroke-width="9" stroke-linecap="round"/>
+  <path d="M394 455l-24 28m24-28 27-24" fill="none" stroke="#2B2D42" stroke-width="6" stroke-linecap="round"/>
+  <path d="M355 483h29m26-52h25" stroke="#2B2D42" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Basket and blue fish. -->
+  <path d="M544 325h107l-12 65h-83Z" fill="#D19A59" stroke="#79543A" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M552 345h94m-90 18h86m-72-35 7 56m26-56 3 58m24-58-6 57" fill="none" stroke="#A87544" stroke-width="3"/>
+  <path d="M574 320q24-24 52 0-28 24-52 0l-17-14v28Z" fill="#00B4D8" stroke="#176A7B" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="610" cy="316" r="2.5" fill="#0B132B"/>
+
+  <!-- Pelican's body, tail, legs, and wing. -->
+  <path d="M321 282q-28 1-50 28 22-4 40 9Z" fill="#E9D8AC" stroke="#8A775D" stroke-width="3"/>
+  <path d="M321 245q-29 26-23 62 8 41 59 56 58 16 87-36 16-29 2-58-19-41-69-44-32-3-56 20Z" fill="#FFF2CE" stroke="#8A775D" stroke-width="4"/>
+  <path d="M327 291q21-34 67-25 30 7 36 36-14 23-43 28-39 8-60-39Z" fill="#E9D8AC" stroke="#8A775D" stroke-width="3"/>
+  <path d="M357 344q-15 29-8 67l21 27m44-92q15 27 6 69l-15 24" fill="none" stroke="#D68442" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M369 437q-10 9-18 3m54-1q10 8 20 1" fill="none" stroke="#D68442" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Long neck, head, beak, and pouch. -->
+  <path d="M389 260q-7-27 1-67 5-31 17-48 20-20 45-11 25 9 28 32 2 22-23 33-19 8-23 29l5 40Z" fill="#FFF2CE" stroke="#8A775D" stroke-width="4"/>
+  <path d="M460 171q42-1 102 11-49 10-98 7Z" fill="#F4B544" stroke="#9B692E" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M465 188q31 6 80 2-21 34-59 31-18-3-21-33Z" fill="#EEC178" stroke="#9B692E" stroke-width="3"/>
+  <circle cx="445" cy="158" r="4.5" fill="#0B132B"/>
+
+  <!-- Scarf around the neck, trailing in the breeze. -->
+  <path d="M391 223q23 14 50 3l9 18q-30 16-55-2Z" fill="#F95738" stroke="#B73E29" stroke-width="2"/>
+  <path d="M400 238q-26 7-49-7l-35 17q31 27 70 18Z" fill="#F95738" stroke="#B73E29" stroke-width="2"/>
+  <path d="M320 244l-12 2m20 6-9 4" stroke="#B73E29" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Wingtip holds the handlebar. -->
+  <path d="M418 290q30-2 55 11l31 14" fill="none" stroke="#8A775D" stroke-width="12" stroke-linecap="round"/>
+  <path d="M501 313q12-9 20 1" fill="none" stroke="#D68442" stroke-width="7" stroke-linecap="round"/>
+</svg>
