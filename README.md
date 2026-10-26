@@ -28,7 +28,7 @@ python infiniteusage/run_iu.py install
 
 | | What | Measured |
 |---|---|---|
-| **Compact at ~300K, not ~967K** (Claude Code) | Every request re-reads the whole context. Long sessions almost never compact by default, so each turn re-reads 400–700K tokens | Replayed on 7 days of real logs: **−43% to −50%** (Codex at ~150K: −21%, −6% pessimistic). After installing, on the author's real work: **−34% tokens per request**, context −38% (before/after, not a controlled A/B) |
+| **Compact at ~300K, not ~967K** (Claude Code) | Every request re-reads the whole context. Long sessions almost never compact by default, so each turn re-reads 400–700K tokens. `iu install` first replays your own last 14 days of logs and picks 300K–600K, or leaves compaction alone if your sessions rarely get that long | Replayed on 7 days of real logs: **−43% to −50%** (Codex at ~150K: −21%, −6% pessimistic). After installing, on the author's real work: **−34% tokens per request**, context −38% (before/after, not a controlled A/B) |
 | **Never forget the requirements** (Claude Code, Codex) | Every requirement goes into `NOTES.md`; a hook loads it back at session start and after every compaction | Fresh session, 16 agreed details: without it **1/16**. With it: **16/16**, on both. Notes alone are not enough: Codex wrote them and still scored 1/16 until the rule or hook made it read them. Frequent compaction: 0/16 → 16/16 |
 | **Free agent first** for verifiable code changes | `iu delegate` hands a self-contained change (fix tests, implement against tests) to a free coding agent (OpenCode free models; when their free quota runs out, OpenCode switches to the free API keys you added). Kept only if your check command passes, rolled back otherwise | Free agents fixed 47/48 single bugs and 3/3 four-bug sets (judged by unit tests). End to end with Opus: **−17% / −18%**, tests green, ~50 s slower. The global rule is what makes the main session use it: **−14%** vs hooks only. Free quota used up → your own key: fixed in **22 s** |
 | **Fastest healthy free model** | Every call records speed and failures; stale data is re-probed in parallel in the background. Dead or rate-limited models drop to the back; a free agent that ran out of quota is abandoned at once | 6 free models probed in 2.6 s, a dead one found. A summary that timed out (30 s) came back in 4.3 s next time. Out-of-quota free agent: given up after **4 s instead of hanging 7 min** (which had cost +33%) |
@@ -53,7 +53,7 @@ Numbers, scripts and caveats for every row: [EVIDENCE.md](EVIDENCE.md) (Chinese)
 
 | Agent | Skill | Global rule | NOTES.md auto-load | Compaction | Free-agent hook |
 |---|---|---|---|---|---|
-| **Claude Code** | ✅ | ✅ | ✅ hook | ✅ ~300K | ✅ |
+| **Claude Code** | ✅ | ✅ | ✅ hook | ✅ picked from your logs (300K–600K) | ✅ |
 | **Codex** | ✅ | ✅ | ✅ hook (Mac/Linux; trust it once with `/hooks`) | ✅ ~150K | — |
 | WorkBuddy, CodeBuddy, Cursor, Trae, Copilot, Amp, Goose, Windsurf, Cline | ✅ | — | — | — | — |
 
@@ -95,7 +95,7 @@ Any other endpoint: `api add myapi --base-url https://example.com/v1`. Then `api
 - Speed: delegation and summaries run free models first, so a task can take longer in wall-clock time (delegated code changes were up to ~3× slower in one test). Turn off what you don't want with `install --no-delegate`, `--no-offload`, `--no-notes` or `--no-compact`
 - Free models are picked by measured speed: every real call records how long it took and whether it failed; at session start, if nothing was measured for an hour, all free APIs are probed in parallel in the background. Models that just failed go last, clearly slower ones go later, and similar ones keep the strongest-first order. A free agent that hangs no longer eats the whole delegation budget. `python run_iu.py speed` shows the table, `speed --probe` tests now, `IU_NO_SPEED_PROBE=1` turns probing off
 - Codex: hooks run only after you trust them once (`/hooks` in Codex). On Windows the Codex NOTES.md hook is not installed yet (tested on Mac / Linux only); the global rule still tells Codex to read `NOTES.md`
-- `python run_iu.py compare` shows your own before/after numbers
+- `python run_iu.py compare` shows, per session, what each early compaction cost and saved, plus your own before/after numbers
 
 ## License
 

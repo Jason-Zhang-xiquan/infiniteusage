@@ -383,6 +383,60 @@ class TestInstall(unittest.TestCase):
         install.cmd_install(self.args(no_rules=True))
         self.assertFalse(os.path.exists(os.path.join(self.tmp, "home", ".codex", "AGENTS.md")))
 
+    def sim(self, compact_at, reason="sim"):
+        from iu import compactsim
+        res = {"compact_at": compact_at, "reason": reason, "requests": 5000, "max_ctx": 900_000,
+               "rows": [{"compact_at": 300_000, "saving": 0.3, "pessimistic": 0.25, "compactions": 9}]}
+        return [mock.patch.object(compactsim, "load_sessions", return_value=[]),
+                mock.patch.object(compactsim, "choose", return_value=res)]
+
+    def test_auto_compact_picks_from_simulation(self):
+        ps = self.sim(400_000)
+        for p in ps:
+            p.start()
+        try:
+            install.cmd_install(self.args(compact_at=None))
+        finally:
+            for p in ps:
+                p.stop()
+        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "597000")
+        state = json.load(open(os.path.join(self.tmp, "install.json")))
+        self.assertEqual((state["compact_at"], state["compact_sim"]["reason"]), (400_000, "sim"))
+
+    def test_auto_compact_short_sessions_leaves_env_alone(self):
+        ps = self.sim(0, "short")
+        for p in ps:
+            p.start()
+        try:
+            install.cmd_install(self.args(compact_at=None))
+        finally:
+            for p in ps:
+                p.stop()
+        self.assertEqual(json.load(open(self.settings))["env"], {"FOO": "1"})
+        install.cmd_uninstall(argparse.Namespace(agent="claude-code", dry_run=False))
+        self.assertEqual(json.load(open(self.settings)), ORIGINAL)
+
+    def test_reinstall_keeps_previous_point_without_simulating(self):
+        install.cmd_install(self.args())  # 第一次装：300K
+        from iu import compactsim
+        with mock.patch.object(compactsim, "choose", side_effect=AssertionError("不该再模拟")):
+            install.cmd_install(self.args(compact_at=None))
+        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "448000")
+
+    def test_reinstall_auto_dropping_compaction_restores_env(self):
+        install.cmd_install(self.args())
+        ps = self.sim(0, "no_gain")
+        for p in ps:
+            p.start()
+        try:
+            install.cmd_install(self.args(compact_at="auto"))
+        finally:
+            for p in ps:
+                p.stop()
+        self.assertNotIn(install.ENV_KEY, json.load(open(self.settings))["env"])
+        install.cmd_uninstall(argparse.Namespace(agent="claude-code", dry_run=False))
+        self.assertEqual(json.load(open(self.settings)), ORIGINAL)
+
 
 class TestPilotStar(unittest.TestCase):
     def test_star_means_all(self):

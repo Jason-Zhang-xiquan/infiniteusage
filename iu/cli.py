@@ -163,9 +163,11 @@ def main(argv=None):
     hp = sub.add_parser("hook-pre", help=t("Claude Code / Codex PreToolUse hook（从 stdin 读 JSON）", "Claude Code / Codex PreToolUse hook (JSON on stdin)"))
     hp.add_argument("--codex", action="store_true", help=t("按 Codex 的格式输出（带 permissionDecision: allow）", "output in Codex format (with permissionDecision: allow)"))
     sub.add_parser("hook-explore-gate", help=t("PreToolUse hook：试点项目里搜代码改走 iu explore（只拒绝不放行）", "PreToolUse hook: route code search to iu explore in pilot projects (deny only)"))
-    ins = sub.add_parser("install", help=t("装进所有 coding agent：skill、常驻规则、NOTES.md hook，Claude Code 约 300K 压缩、Codex 约 150K（会备份；--dry-run 预览）", "install into every coding agent: skill, standing rule, NOTES.md hook; Claude Code compacts at ~300K, Codex at ~150K (backs up; --dry-run to preview)"))
+    ins = sub.add_parser("install", help=t("装进所有 coding agent：skill、常驻规则、NOTES.md hook，Claude Code 按本机日志模拟选压缩点、Codex 约 150K（会备份；--dry-run 预览）", "install into every coding agent: skill, standing rule, NOTES.md hook; Claude Code compaction point picked by simulating your logs, Codex at ~150K (backs up; --dry-run to preview)"))
     ins.add_argument("--agent", default="all", help=t("all（默认）/ claude-code / skills（只装 skill）", "all (default) / claude-code / skills (skill only)"))
-    ins.add_argument("--compact-at", type=int, default=300_000, help=t("上下文到多少 token 时压缩（默认 300000）", "compact at this many context tokens (default 300000)"))
+    ins.add_argument("--compact-at", help=t("上下文到多少 token 时压缩；auto = 在本机日志上模拟选点（第一次装默认 auto，重装默认沿用上次的）",
+                                            "compact at this many context tokens; auto = pick by simulating on your local logs "
+                                            "(default: auto on first install, the previous value on reinstall)"))
     ins.add_argument("--codex-compact-at", type=int, default=150_000,
                      help=t("Codex 上下文到多少 token 时压缩（默认 150000，0 = 不改 Codex）", "Codex: compact at this many context tokens (default 150000, 0 = leave Codex alone)"))
     ins.add_argument("--no-compact", action="store_true", help=t("不改压缩设置（Claude Code 和 Codex 都不改）", "do not change compaction settings (Claude Code or Codex)"))

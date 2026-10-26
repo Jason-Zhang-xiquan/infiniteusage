@@ -15,7 +15,7 @@
 |---|---|---|
 | 常驻规则（Claude Code / Codex） | 全局说明文件里加一段：写代码前先加载 skill，能验证的改动先 `iu delegate`，长输出用 `iu sum` | Claude Code（Opus 修 bug 冲刺）：没有规则 0 次委托，有规则每次都委托，比只有 hook −14% |
 | skill（所有 agent） | 教 agent 用 `iu agents` 找可用的 agent 和免费 API，用 `iu delegate` 把能用命令验证的改代码子任务先交给免费 agent，用 `iu sum` 读长输出的摘要 | 免费 agent 修 bug：47/48 个单 bug、3/3 组 4 个 bug 一起修，都由单元测试判定 |
-| 约 300K 压缩（Claude Code） | 设置 `CLAUDE_CODE_AUTO_COMPACT_WINDOW`。默认要到约 967K 才压缩，长会话的每一轮都在重读几十万 token | 在用户的真实日志上模拟：省 43~50% |
+| 提前压缩（Claude Code，按本机日志选点） | 设置 `CLAUDE_CODE_AUTO_COMPACT_WINDOW`。默认要到约 967K 才压缩，长会话的每一轮都在重读几十万 token。第一次装时先在这台电脑最近 14 天的 Claude Code 日志上模拟 300K / 400K / 500K / 600K（只读本机日志，不花额度）：省得最多、和最好的差不到 2 个百分点的里面选压缩最少的；悲观假设下不省、或省不到 3%（比如会话很少长到 300K、用的是 200K 窗口的模型）就不改压缩设置；日志少于 300 次请求先用 300K。重装沿用上次的点，`--compact-at auto` 重新模拟（只看第一次装之前的日志） | 作者的 Windows 日志：300K 省 55%（悲观 52%）→ 选 300K；Mac 日志：300K 省 8%，400K 以上基本不省 |
 | 约 150K 压缩（Codex） | `~/.codex/config.toml` 顶层设 `model_auto_compact_token_limit = 150000`。默认不设时约在窗口的 90% 才压缩（272K 窗口的模型约 232K，gpt-6.1-sol 约 427K）。只按行改这一行，别的内容一字不动；改前备份，原值记进 install.json，卸载时一字节不差地还原（你后来自己改了这个值，卸载就不动它） | 在用户的真实 Codex 日志上模拟：Windows 省 21%（悲观假设 6%）；Mac 会话短，不触发。Mac 小规模实测（修 bug 冲刺 6 次/组）：150K 在短任务上不触发，6/6 全过、用量 −1%（噪声）；强制 40K 压缩 6/6 全过、+1% |
 | 子 agent 先试免费 agent（Claude Code） | PreToolUse hook（Agent 工具）：通用子 agent 改代码前先交给免费 agent，验证命令通过才保留，不过就全部还原 | 端到端 Opus：-17~18%，测试全过 |
 | 外包长输出（Claude Code） | PreToolUse hook：长的测试、构建、git 输出交给免费模型压缩，原始输出存成文件，出错原样放行 | 测试/构建多的任务：Sonnet -20%。以读代码为主的工作只省 1~2% |
@@ -60,11 +60,13 @@
 python <repo>/run_iu.py compare
 ```
 
-比较的是「每次请求的等效 token」和「每次请求平均带多少上下文」，不比总量（每天干的活多少不一样）。装后请求超过 200 次，数字才比较稳定。
+先看「提前压缩按会话算账」：装之后每一次提前压缩一行，算「不压缩的话，后面那些请求要多读多少上下文」，减去压缩本身的花费（压缩那次请求不进日志，按读一遍旧上下文 + 写摘要估），得出净省；压缩完会话很快就结束的会算成亏；到约 950K 时不改设置 Claude Code 也会自己压缩，之后不再算省。手动 `/compact` 和小窗口模型的默认压缩不算。还会列出有多少个会话根本没长到压缩点。
+
+下面按天汇总的「每次请求的等效 token」「每次请求平均带多少上下文」只做参考：装前装后干的活不一样，会话长短一变，这些数字就跟着变，不能直接算成工具的效果。
 
 ## 调整和卸载
 
-- 换压缩点：`install --compact-at 400000`（想更保守就调大）；Codex 的：`install --codex-compact-at 200000`，`--codex-compact-at 0` 不改 Codex；`--no-compact` 两家都不改
+- 换压缩点：`install --compact-at 400000`（想更保守就调大）；重新按日志模拟选点：`install --compact-at auto`；Codex 的：`install --codex-compact-at 200000`，`--codex-compact-at 0` 不改 Codex；`--no-compact` 两家都不改
 - 试验：Codex 也外包长输出（PreToolUse → `iu hook-pre --codex`，只在 Mac / Linux 上装，默认不装）：`install --codex-offload`。要先在 Codex 里 `/hooks` 信任；在 `workspace-write` 沙箱里连不上免费模型，只会用规则过滤
 - 不要外包长输出：`install --no-offload`
 - 不要「子 agent 先试免费 agent」：`install --no-delegate`

@@ -3,6 +3,7 @@
 
 装这几样东西，都有证据（EVIDENCE.md）：
   1. 提前压缩：env CLAUDE_CODE_AUTO_COMPACT_WINDOW。实测触发点约为窗口的 67%，所以「约 300K 压缩」= 窗口 450K。
+     压缩点第一次装时在本机日志上模拟选（iu/compactsim.py，300K~600K；会话很少长到这么长就不改）。
      你的真实日志模拟：Windows 省 43~50%（悲观假设下仍省 43%）
   2. 外包长输出：PreToolUse hook，只在配置了免费模型（FreeLLMAPI 统一 key）时才装。实测 Sonnet -20%（测试/构建多的任务）
   3. 子 agent 先试免费 agent 写代码：PreToolUse hook（Agent 工具），只在找得到 OpenCode 时才装。
@@ -92,6 +93,49 @@ def delegate_ready() -> bool:
         return True
     except SystemExit:
         return False
+
+
+SIM_DAYS = 14
+
+
+def pick_compact_at(arg, prev: dict):
+    """--compact-at：数字就照用；auto 就在本机日志上模拟；不填时重装沿用上次的，第一次装就模拟。
+    返回 (压缩点（0 = 不改）, 模拟结果或 None)"""
+    if arg not in (None, "auto"):
+        try:
+            return int(arg), None
+        except ValueError:
+            raise SystemExit(t("--compact-at 要是数字或 auto", "--compact-at must be a number or auto"))
+    if arg is None and prev.get("settings") and not prev.get("uninstalled_at") and "compact_at" in prev:
+        at = prev["compact_at"]
+        print(t(f"  · 压缩点沿用上次的：{f'约 {at // 1000}K' if at else '不改'}（重新模拟：iu install --compact-at auto）",
+                f"  · keeping the previous compaction point: {f'~{at // 1000}K' if at else 'unchanged'} "
+                f"(re-simulate: iu install --compact-at auto)"))
+        return at, prev.get("compact_sim")
+    from . import compactsim
+    # 装过的话只看装之前的日志：装之后的会话已经被压缩过，看不出不压缩时会长多长
+    until = (prev.get("compact_at") and prev.get("installed_at")) or time.time()
+    since = until - SIM_DAYS * 86400
+    print(t(f"  · 在你最近 {SIM_DAYS} 天的 Claude Code 日志上模拟不同压缩点（只读本机日志，不花额度）…",
+            f"  · simulating compaction points on your last {SIM_DAYS} days of Claude Code logs (local, free)…"))
+    r = compactsim.choose(compactsim.load_sessions(since), compactsim.iso(since), compactsim.iso(until))
+    for row in r["rows"]:
+        print(t(f"      {row['compact_at'] // 1000}K 压缩：省 {row['saving']:.0%}（悲观 {row['pessimistic']:.0%}），压缩 {row['compactions']} 次",
+                f"      compact at {row['compact_at'] // 1000}K: saves {row['saving']:.0%} (pessimistic {row['pessimistic']:.0%}), "
+                f"{row['compactions']} compactions"))
+    msg = {
+        "few": t(f"日志太少（{r['requests']} 次请求），先用默认约 {r['compact_at'] // 1000}K；过几天可以 iu install --compact-at auto 重新模拟",
+                 f"too few logs ({r['requests']} requests); using the default ~{r['compact_at'] // 1000}K for now. "
+                 f"Re-simulate in a few days: iu install --compact-at auto"),
+        "short": t(f"最近没有会话长到 {compactsim.CANDIDATES[0] // 1000}K（最长 {r['max_ctx'] / 1000:.0f}K），提前压缩帮不上忙，不改压缩设置",
+                   f"no session reached {compactsim.CANDIDATES[0] // 1000}K lately (longest {r['max_ctx'] / 1000:.0f}K); "
+                   f"early compaction would not help, compaction settings left alone"),
+        "no_gain": t(f"模拟省不到 {compactsim.MIN_SAVING:.0%}，不改压缩设置", f"simulated saving under {compactsim.MIN_SAVING:.0%}; compaction settings left alone"),
+        "sim": t(f"选约 {r['compact_at'] // 1000}K（省得最多的几个里压缩最少的）",
+                 f"picked ~{r['compact_at'] // 1000}K (the fewest compactions among the best savings)"),
+    }[r["reason"]]
+    print("  · " + msg)
+    return r["compact_at"], {k: r[k] for k in ("reason", "rows", "requests", "max_ctx")}
 
 
 def plan_changes(settings: dict, compact_at: int, offload: bool, python: str, delegate: bool = False,
@@ -326,8 +370,18 @@ def cmd_install(args):
     delegate = not args.no_delegate and delegate_ready()
     python = sys.executable.replace("\\", "/")
     notes_hook = not getattr(args, "no_notes", False)
-    new, notes = plan_changes(settings, 0 if args.no_compact else args.compact_at, offload, python, delegate, notes_hook)
     print(t("Claude Code 设置文件：", "Claude Code settings file: ") + path)
+    compact_at, compact_sim = (0, None) if args.no_compact else pick_compact_at(args.compact_at, prev)
+    new, notes = plan_changes(settings, compact_at, offload, python, delegate, notes_hook)
+    if not compact_at and prev.get("settings") and not prev.get("uninstalled_at") and prev.get("compact_at"):
+        env = new.get("env") or {}  # 上次装时改过压缩设置，这次不改了：还原成装之前的值
+        if prev.get("previous_env") is None:
+            env.pop(ENV_KEY, None)
+        else:
+            env[ENV_KEY] = prev["previous_env"]
+        if not env:
+            new.pop("env", None)
+        notes.append(t(f"env.{ENV_KEY}：还原成装之前的值", f"env.{ENV_KEY}: restored to the value before install"))
     for n in notes:
         print("  · " + n)
     if not args.no_offload and not offload:
@@ -350,7 +404,7 @@ def cmd_install(args):
     os.makedirs(DATA_DIR, exist_ok=True)
     old = load_state()
     state = {"agent": "claude-code", "installed_at": time.time(), "settings": path, "backup": backup,
-             "previous_env": (settings.get("env") or {}).get(ENV_KEY), "compact_at": 0 if args.no_compact else args.compact_at,
+             "previous_env": (settings.get("env") or {}).get(ENV_KEY), "compact_at": compact_at, "compact_sim": compact_sim,
              "offload": offload, "delegate": delegate, "notes_hook": notes_hook, "skills": skills, "app": RUNNER, "rules": rules,
              **extra_state}
     if old.get("settings") and not old.get("uninstalled_at"):  # 重装：原值和装机时间沿用第一次的（不然卸载会「还原」成我们自己的值）

@@ -52,7 +52,7 @@ Projects that contain a `.iu-private` file are never sent out.
 
 ## 3. Long sessions: compaction-friendly
 
-Paid cost is roughly turns × context: every request re-reads the whole context. `iu install` makes Claude Code compact at about 300K tokens instead of about 967K, and Codex at about 150K.
+Paid cost is roughly turns × context: every request re-reads the whole context. `iu install` makes Claude Code compact earlier than the default ~967K (300K-600K, picked by replaying this machine's own logs; left alone if sessions rarely get that long), and Codex at about 150K. `iu compare` shows per session what each early compaction cost and saved.
 
 Compaction summaries drop things. In a measured test (Sonnet, frequent compaction) the user's 16 agreed requirements were all lost without notes; with notes 12/16 survived, and the 4 that were lost were exactly the small details the model had not written down. So notes go in a file, and they must be complete:
 

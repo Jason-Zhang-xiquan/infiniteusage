@@ -194,7 +194,7 @@ def cmd_speed(args):
         e = rows[k]
         real = f"{e['real']:.1f} s" if "real" in e else "-"
         pr = f"{e['probe']:.1f} s" if "probe" in e else "-"
-        state = t(f"冷却中（连续失败 {e.get('fails')} 次）", f"cooling down ({e.get('fails')} failures in a row)") \
+        state = t(f"冷却中（连续失败 {e.get('fails')} 次）", f"cooling down ({e.get('fails')} failed in a row)") \
             if cooling(e) else t("正常", "ok")
         print(f"  {k:<52} {real:>8} {pr:>7}  {state}")
     probed = (d.get("_meta") or {}).get("probed_at")
