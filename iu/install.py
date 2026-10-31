@@ -2,7 +2,7 @@
 有 Claude Code 的话再改它的设置（下面三样都只在 Claude Code 上实测过）。
 
 装这几样东西，都有证据（EVIDENCE.md）：
-  1. 提前压缩：env CLAUDE_CODE_AUTO_COMPACT_WINDOW。实测触发点约为窗口的 67%，所以「约 300K 压缩」= 窗口 450K。
+  1. 提前压缩：env CLAUDE_CODE_AUTO_COMPACT_WINDOW。实测触发点约为窗口减 33K，所以「约 300K 压缩」= 窗口 333K。
      压缩点第一次装时在本机日志上模拟选（iu/compactsim.py，300K~600K；会话很少长到这么长就不改）。
      你的真实日志模拟：Windows 省 43~50%（悲观假设下仍省 43%）
   2. 外包长输出：PreToolUse hook，只在配置了免费模型（FreeLLMAPI 统一 key）时才装。实测 Sonnet -20%（测试/构建多的任务）
@@ -33,7 +33,7 @@ from .i18n import t
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RUNNER = os.path.join(ROOT, "run_iu.py").replace("\\", "/")
 STATE = os.path.join(DATA_DIR, "install.json")
-TRIGGER_RATIO = 0.67  # 实测：压缩在窗口的约 67% 处触发（bench/ab_sprint.py 的 W 组，100K 窗口在 64~71K 压缩）
+TRIGGER_BUFFER = 33_000  # 实测：压缩在窗口减约 33K 处触发（100K 窗口 64~71K，448K 窗口 414~416K，默认 1M 窗口约 967K）
 ENV_KEY = "CLAUDE_CODE_AUTO_COMPACT_WINDOW"
 MARK = "run_iu.py"  # 配合 is_ours()：命令里同时有 run_iu.py 和 hook-pre / hook-agent / hook-compact 才算我们装的
 OUR_EVENTS = ("PreToolUse", "SessionStart")
@@ -145,12 +145,12 @@ def plan_changes(settings: dict, compact_at: int, offload: bool, python: str, de
     strip_ours(new)  # 重装：先删掉上次装的，再按这次的选择加
     notes = []
     if compact_at:
-        window = int(round(compact_at / TRIGGER_RATIO / 1000)) * 1000
+        window = int(round((compact_at + TRIGGER_BUFFER) / 1000)) * 1000
         window = max(100_000, min(window, 1_000_000))
         env = new.setdefault("env", {})
         old = env.get(ENV_KEY)
         env[ENV_KEY] = str(window)
-        k = int(window * TRIGGER_RATIO / 1000)
+        k = (window - TRIGGER_BUFFER) // 1000
         notes.append(f"env.{ENV_KEY}: {old!r} → '{window}'" + t(f"（约在上下文 {k}K 时压缩；默认要到约 967K 才压缩）",
                                                                    f" (compacts at ~{k}K context; the default is ~967K)"))
     if offload:

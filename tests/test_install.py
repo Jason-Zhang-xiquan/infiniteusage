@@ -83,12 +83,18 @@ class TestInstall(unittest.TestCase):
         install.cmd_install(self.args(dry_run=True))
         self.assertEqual(json.load(open(self.settings)), ORIGINAL)
 
+    def test_window_is_compact_point_plus_buffer(self):
+        for at, window in ((300_000, "333000"), (600_000, "633000"), (40_000, "100000"), (990_000, "1000000")):
+            new, notes = install.plan_changes({}, at, False, "python")
+            self.assertEqual(new["env"][install.ENV_KEY], window)
+            self.assertIn(f"{(int(window) - install.TRIGGER_BUFFER) // 1000}K", notes[0])
+
     def test_install_keeps_existing_and_adds_ours(self):
         install.cmd_install(self.args())
         s = json.load(open(self.settings))
         self.assertEqual(s["model"], "opus")
         self.assertEqual(s["env"]["FOO"], "1")
-        self.assertEqual(s["env"][install.ENV_KEY], "448000")  # 300K / 0.67 取整到千
+        self.assertEqual(s["env"][install.ENV_KEY], "333000")  # 300K + 33K
         self.assertEqual(s["permissions"], ORIGINAL["permissions"])
         cmds = [h["command"] for e in s["hooks"]["PreToolUse"] for h in e["hooks"]]
         self.assertIn("echo mine", cmds)
@@ -399,7 +405,7 @@ class TestInstall(unittest.TestCase):
         finally:
             for p in ps:
                 p.stop()
-        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "597000")
+        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "433000")
         state = json.load(open(os.path.join(self.tmp, "install.json")))
         self.assertEqual((state["compact_at"], state["compact_sim"]["reason"]), (400_000, "sim"))
 
@@ -421,7 +427,7 @@ class TestInstall(unittest.TestCase):
         from iu import compactsim
         with mock.patch.object(compactsim, "choose", side_effect=AssertionError("不该再模拟")):
             install.cmd_install(self.args(compact_at=None))
-        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "448000")
+        self.assertEqual(json.load(open(self.settings))["env"][install.ENV_KEY], "333000")
 
     def test_reinstall_auto_dropping_compaction_restores_env(self):
         install.cmd_install(self.args())
